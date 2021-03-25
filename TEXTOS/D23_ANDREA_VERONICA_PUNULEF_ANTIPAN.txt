@@ -1,0 +1,10 @@
+('PROGRAMA CONVENCION CONSTITUYENTE \n'
+ ' \n'
+ ' \n'
+ '1.-  Rescatar lo que me parece bueno de la actual constitución;  \n'
+ ' \n'
+ '2.- modificar lo que se puede mejorar con ella; \n'
+ ' \n'
+ '3.- Eliminar o cambiar lo que me parece mal; \n'
+ ' \n'
+ '4.- Poder participar en cualquier comisión que se me designe. \n')
