@@ -1,10 +1,1 @@
-('Programa: \n'
- ' \n'
- 'Establecer un constitución que consagre un Estado Social de derechos, con '
- 'respeto al medio \n'
- 'ambiente, que cambie el modelo productivo del país, logrando una sociedad '
- 'mas justa y solidaria, \n'
- 'así como también mejorar lo conocido como sala de maquinas de la '
- 'constitución como es la parte \n'
- 'arquitectónica, con un Estado mas eficiente, mas descentralizado y más '
- 'democratico \n')
+('Programa: ' ' ' 'Establecer un constitución que consagre un Estado Social de derechos, con ' 'respeto al medio ' 'ambiente, que cambie el modelo productivo del país, logrando una sociedad ' 'mas justa y solidaria, ' 'así como también mejorar lo conocido como sala de maquinas de la ' 'constitución como es la parte ' 'arquitectónica, con un Estado mas eficiente, mas descentralizado y más ' 'democratico ')
