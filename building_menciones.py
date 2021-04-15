@@ -17,7 +17,7 @@ conn=sqlite3.connect('greenpeace.db')
 
 nmatches=[]
 amatches=[]
-
+print('TEMAS:', men.Tema)
 for word in men.Tema:
     nmatches.append(sum(matches([word,text]) for text in textos))
     amatches.append(sum([1 if word in text else 0 for text in textos]))

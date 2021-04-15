@@ -1,6 +1,6 @@
 from flask import Flask, make_response, render_template, request, jsonify
 from flask_cors import CORS
-import sqlite3, pandas as pd
+import glob, sqlite3, pandas as pd
 
 from searcher import querier, cubicalo
 
@@ -25,6 +25,11 @@ def cubitos(tipo):
 def hello():
 
     return render_template('entering.html')
+
+@app.route('/listas')
+def listas():
+    plots = glob.glob('static/images/lista*.png')
+    return render_template('listas.html', plots=plots)
 
 @app.route('/menciones', methods=['GET','POST'])
 def hello_world():

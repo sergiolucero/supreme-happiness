@@ -1,4 +1,3 @@
-,Tema
 0,agua
 1,naturaleza
 2,derecho humano al agua
