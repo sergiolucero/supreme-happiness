@@ -1,6 +1,8 @@
 from searcher import *
 from itertools import product
 
+conn = sqlite3.connect('greenpeace.db')
+
 temas=sql('SELECT LOWER(Tema) FROM menciones').values
 temas = [t[0] for t in temas]
 
@@ -28,6 +30,7 @@ for tema, dist in product(temas, distritos):
 dxdf = pd.DataFrame(dict(tema=Temas,distrito=Dists,
                          nProgramas=nProg,nMenciones=nMen))
 dxdf.to_html('static/cruce_tema_distrito.html', index=False)
+dxdf.to_sql('cruce_distrito', conn, index=False, if_exists='replace')
 
 # 2. por lista/partido
 for token in ['lista','partido']:
@@ -59,7 +62,7 @@ for token in ['lista','partido']:
 
     tdf = pd.DataFrame(dict(tipo=Tokes, tema=Temas, nMenciones=nMen, nProgramas=nProg))
     tdf[token] = Dists
-    tdf.to_sql('cruce_'+token, sqlite3.connect('greenpeace.db'), index=False, if_exists='replace')
+    tdf.to_sql('cruce_'+token, conn, index=False, if_exists='replace')
     
     print(token, nBads, '-'*80)
     print(tdf.head())
