@@ -10,10 +10,18 @@ app = Flask(__name__, static_folder='static')
 cors = CORS(app)
 ################################
 @app.route('/ver_menciones/<query>/<ancho>', methods=['GET','POST'])
-def verlas(query):
+def verlas(query, ancho):
 
     ANCHO = int(ancho)
     data = querier(query)   # fix: merged
+
+    return render_template('ver_menciones.html', data=data, mencion=query, ancho=ANCHO)
+
+@app.route('/ver_menciones_ori/<query>/<ancho>', methods=['GET','POST'])
+def verlas_ori(query, ancho):
+
+    ANCHO = int(ancho)
+    data = querier(query, tipo='ori')   # fix: merged
 
     return render_template('ver_menciones.html', data=data, mencion=query, ancho=ANCHO)
 
@@ -39,6 +47,17 @@ def hello_world():
     #men = pd.read_csv('keywords.txt', names=['Tema'])
     #men['Tema']=men.Tema.apply(lambda t: t.split('\t')[1])
     men = sql('SELECT * FROM menciones ORDER BY nMenciones DESC')
+    men['link'] = ['<A HREF="%s">click</A>' %link for link in men['link']]
+
+    data = men.to_html(index=False, escape=False, classes='mystyle')
+
+    return render_template('menciones.html', data=data)
+
+@app.route('/originarios', methods=['GET','POST'])
+def hello_otis():
+    #men = pd.read_csv('keywords.txt', names=['Tema'])
+    #men['Tema']=men.Tema.apply(lambda t: t.split('\t')[1])
+    men = sql('SELECT * FROM menciones_ori ORDER BY nMenciones DESC')
     men['link'] = ['<A HREF="%s">click</A>' %link for link in men['link']]
 
     data = men.to_html(index=False, escape=False, classes='mystyle')
