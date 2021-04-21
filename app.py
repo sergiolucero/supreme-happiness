@@ -9,11 +9,13 @@ sql = lambda q: pd.read_sql(q, sqlite3.connect('greenpeace.db'))
 app = Flask(__name__, static_folder='static')
 cors = CORS(app)
 ################################
-@app.route('/ver_menciones/<query>', methods=['GET','POST'])
+@app.route('/ver_menciones/<query>/<ancho>', methods=['GET','POST'])
 def verlas(query):
-    data = querier(query)
 
-    return render_template('ver_menciones.html', data=data)
+    ANCHO = int(ancho)
+    data = querier(query)   # fix: merged
+
+    return render_template('ver_menciones.html', data=data, mencion=query, ancho=ANCHO)
 
 @app.route('/cubo_menciones/<tipo>', methods=['GET','POST'])
 def cubitos(tipo):
@@ -29,6 +31,7 @@ def hello():
 @app.route('/listas')
 def listas():
     plots = glob.glob('static/images/lista*.png')
+    print('PLOTS:', plots)
     return render_template('listas.html', plots=plots)
 
 @app.route('/menciones', methods=['GET','POST'])

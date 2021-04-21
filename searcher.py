@@ -9,7 +9,7 @@ def cubicalo(tipo):     # proyecciones bidimensionales: (i) por distrito/lista/p
 
     return matches
 
-def querier(query):
+def querier(query, WIDTH=80):
     squery = query.lower().replace('_',' ')
 
     files = list(glob.glob('TEXTOS/TODOS/*.txt'))
@@ -19,7 +19,6 @@ def querier(query):
     MARK = '<MARK>%s</MARK>'
 
     matches = {}
-    WIDTH = 80
     for file, texto in zip(files, textos):
         tfile = file[13:-4]
         op = lambda f: (texto[(f.start()-WIDTH):(f.end()+WIDTH)]).replace('\n','')
