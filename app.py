@@ -49,7 +49,7 @@ def listas():
 def hello_world():
     #men = pd.read_csv('keywords.txt', names=['Tema'])
     #men['Tema']=men.Tema.apply(lambda t: t.split('\t')[1])
-    men = sql('SELECT * FROM menciones ORDER BY nMenciones DESC')
+    men = sql('SELECT * FROM menciones_todos ORDER BY nMenciones DESC')
 
     men['Tema'] = men.Tema.apply(lambda t: 'clima' if 'clim' in t else 'medioambiente' if 'medio' in t else t)
     men = men.groupby('Tema').sum().reset_index()
