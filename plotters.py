@@ -15,10 +15,15 @@ df['candidato'] = [' '.join(fn.split('/')[2].split('_')[1:])[:-4] for fn in file
 cdf=sql('SELECT * FROM candidatos')
 xdf=df.merge(cdf, on='candidato').drop(['archivo','distrito_y','programa'],axis=1)
 
-kw = pd.read_csv('keywords.txt', names=['palabra'])
-kw['palabra'] = kw.palabra.apply(lambda p: p.split('\t')[1])
+#kw = pd.read_csv('keywords.txt', names=['palabra'])
+kw = eval(open('keywords_final.txt').read())
+#kw['palabra'] = kw.palabra.apply(lambda p: p.split('\t')[1])
+WORDS = list(kw.keys())
+for v in kw.values():
+    WORDS += v
+print('WORDS:', WORDS)
 
-for word in kw.palabra:
+for word in WORDS:
     xdf[word] = xdf.texto.apply(lambda t: len(list(re.finditer(word.lower(), t))))
 
 sdf=xdf.groupby('partido').sum()
@@ -39,7 +44,7 @@ p=sns.heatmap(psdf[psdf.index!='INDEPENDIENTES'][temas].replace(0, np.nan),
 plt.xticks(rotation=45); plt.title('Menciones ambientales por tema y partido (excluye independientes)', size=24);
 plt.savefig('heatmap2.png')
 
-tdf = psdf[psdf.index!='INDEPENDIENTES'][temas]
+tdf = psdf[psdf.index!='INDEPENDIENTES'][temas].reset_index()
 tdf['partido'] = tdf['partido'].apply(lambda p: p.replace('IND ',''))   # IND RN -> RN
 ts = pd.DataFrame(tdf.sum(axis=1).reset_index())
 ts.columns = ['partido','total_menciones']
