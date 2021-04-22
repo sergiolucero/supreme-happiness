@@ -16,7 +16,7 @@ def querier(query, WIDTH=80, tipo=None):
 
     FOLDER = 'TEXTOS/TODOS/*.txt' if tipo is None else 'TEXTOS/INDIGENAS/*.txt'
     files = list(glob.glob(FOLDER))
-    textos = [open(fn).read().replace(chr(10),' ').replace('\\t','') for fn in files]
+    textos = [open(fn).read().replace(chr(10),' ').replace('\\t','').replace('\\xa0',' ') for fn in files]
     print('QUERY:', squery)
 
     MARK = '<MARK>%s</MARK>'
