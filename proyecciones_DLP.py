@@ -4,6 +4,7 @@ from itertools import product
 conn = sqlite3.connect('greenpeace.db')
 
 temas=sql('SELECT LOWER(Tema) FROM menciones').values
+print('TEMAS:', temas)
 temas = [t[0] for t in temas]
 
 cdf = pd.read_csv('candidatos.csv')

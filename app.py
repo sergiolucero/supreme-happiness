@@ -13,15 +13,15 @@ cors = CORS(app)
 def verlas(query, ancho):
 
     ANCHO = int(ancho)
-    data = querier(query)   # fix: merged
+    data = querier(query, ANCHO)   
 
-    return render_template('ver_menciones.html', data=data, mencion=query, ancho=ANCHO)
+    return render_template('ver_menciones.html', data=data, mencion=query)
 
 @app.route('/ver_menciones_ori/<query>/<ancho>', methods=['GET','POST'])
 def verlas_ori(query, ancho):
 
     ANCHO = int(ancho)
-    data = querier(query, tipo='ori')   # fix: merged
+    data = querier(query, ANCHO, tipo='ori')   # fix: merged
 
     return render_template('ver_menciones.html', data=data, mencion=query, ancho=ANCHO)
 
@@ -33,8 +33,11 @@ def cubitos(tipo):
 
 @app.route('/')
 def hello():
-
     return render_template('entering.html')
+
+@app.route('/equipo')
+def equipo():
+    return render_template('equipo.html')
 
 @app.route('/listas')
 def listas():
@@ -47,7 +50,11 @@ def hello_world():
     #men = pd.read_csv('keywords.txt', names=['Tema'])
     #men['Tema']=men.Tema.apply(lambda t: t.split('\t')[1])
     men = sql('SELECT * FROM menciones ORDER BY nMenciones DESC')
-    men['link'] = ['<A HREF="%s">click</A>' %link for link in men['link']]
+
+    men['Tema'] = men.Tema.apply(lambda t: 'clima' if 'clim' in t else 'medioambiente' if 'medio' in t else t)
+    men = men.groupby('Tema').sum().reset_index()
+    URL = 'http://greenpeace.quant.cl:8081/ver_menciones/%s/50' 
+    men['link'] = ['<A HREF="%s">click</A>' %(URL %tema) for tema in men['Tema']]
 
     data = men.to_html(index=False, escape=False, classes='mystyle')
 
