@@ -36,13 +36,13 @@ psdf = sdf[sdf.index.isin(partidos)]
 fig, ax = plt.subplots(1, figsize=(20,12))
 p=sns.heatmap(psdf[temas].replace(0,np.nan), annot=True, annot_kws={'size':16, 'weight': 'bold'}, cmap='RdYlGn', fmt='.0f');
 plt.xticks(rotation=45); plt.title('Menciones ambientales por tema y partido (incluye independientes)', size=24);
-plt.savefig('heatmap1.png')
+plt.savefig('static/heatmap_partidosI.png')
 
 fig, ax = plt.subplots(1, figsize=(20,12))
 p=sns.heatmap(psdf[psdf.index!='INDEPENDIENTES'][temas].replace(0, np.nan), 
               annot=True, annot_kws={'size':16, 'weight': 'bold'}, cmap='RdYlGn', fmt='.0f');
 plt.xticks(rotation=45); plt.title('Menciones ambientales por tema y partido (excluye independientes)', size=24);
-plt.savefig('heatmap2.png')
+plt.savefig('static/heatmap_partidos.png')
 
 tdf = psdf[psdf.index!='INDEPENDIENTES'][temas].reset_index()
 tdf['partido'] = tdf['partido'].apply(lambda p: p.replace('IND ',''))   # IND RN -> RN
@@ -52,4 +52,4 @@ ts = ts[ts.total_menciones>0]
 fig,ax = plt.subplots(1, figsize=(20,12))
 sns.barplot(x='total_menciones', data=ts.sort_values('total_menciones'), y='partido', palette='RdYlGn');
 plt.title('Ranking partidos políticos por número total de menciones', size=20)
-plt.savefig('ranking.png')
+plt.savefig('static/ranking.png')
