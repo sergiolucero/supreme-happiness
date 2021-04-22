@@ -8,6 +8,7 @@ print('TEMAS:', temas)
 temas = [t[0] for t in temas]
 
 cdf = pd.read_csv('candidatos.csv')
+cdf['partido'] = cdf.partido.apply(lambda p: p[4:]+'-IND' if p[:3]=='IND' else p)
 distritos = cdf.distrito.unique()
 files = list(glob.glob('TEXTOS/TODOS/*.txt'))
 textos = [open(fn).read() for fn in files]
