@@ -54,7 +54,7 @@ def hello_world():
     #men['Tema'] = men.Tema.apply(lambda t: 'clima' if 'clim' in t else 'medioambiente' if 'medio' in t else t)
     men = men.groupby('concepto').sum().reset_index()
     #URL = 'http://greenpeace.quant.cl:8081/ver_menciones/%s/50' 
-    URL = 'http://greenpeace-monitor.herokuapp/ver_menciones/%s/50' 
+    URL = 'http://greenpeace-monitor.herokuapp.com/ver_menciones/%s/50' 
     men['link'] = ['<A HREF="%s">click</A>' %(URL %tema) for tema in men['concepto']]
 
     data = men.to_html(index=False, escape=False, classes='mystyle')
