@@ -37,19 +37,23 @@ fig, ax = plt.subplots(1, figsize=(20,12))
 p=sns.heatmap(psdf[temas].replace(0,np.nan), annot=True, annot_kws={'size':16, 'weight': 'bold'}, cmap='RdYlGn', fmt='.0f');
 plt.xticks(rotation=45); plt.title('Menciones ambientales por tema y partido (incluye independientes)', size=24);
 plt.savefig('static/heatmap_partidosI.png')
+plt.close()
 
 fig, ax = plt.subplots(1, figsize=(20,12))
 p=sns.heatmap(psdf[psdf.index!='INDEPENDIENTES'][temas].replace(0, np.nan), 
               annot=True, annot_kws={'size':16, 'weight': 'bold'}, cmap='RdYlGn', fmt='.0f');
 plt.xticks(rotation=45); plt.title('Menciones ambientales por tema y partido (excluye independientes)', size=24);
 plt.savefig('static/heatmap_partidos.png')
+plt.close()
 
 tdf = psdf[psdf.index!='INDEPENDIENTES'][temas].reset_index()
-tdf['partido'] = tdf['partido'].apply(lambda p: p.replace('IND ',''))   # IND RN -> RN
-ts = pd.DataFrame(tdf.sum(axis=1).reset_index())
+tdf['partido'] = tdf['partido'].apply(lambda p: p[4:]+'-IND ' if p[:3]=='IND' else p)   # IND RN -> RN
+#ts = pd.DataFrame(tdf.sum(axis=1).reset_index())
+ts = tdf.groupby('partido').sum().sum(axis=1).sort_values().reset_index()
 ts.columns = ['partido','total_menciones']
 ts = ts[ts.total_menciones>0]
 fig,ax = plt.subplots(1, figsize=(20,12))
 sns.barplot(x='total_menciones', data=ts.sort_values('total_menciones'), y='partido', palette='RdYlGn');
 plt.title('Ranking partidos políticos por número total de menciones', size=20)
 plt.savefig('static/ranking.png')
+plt.close()
