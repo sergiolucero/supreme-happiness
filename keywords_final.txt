@@ -1,5 +1,6 @@
-{'agua': Agua Derecho humano al agua Derecho al agua Derecho de agua Crisis hídrica Cuenca Sequía Río Glaciar Salara
-humedal
-
+{'agua': ['derecho humano al agua', 'derecho al agua',
+          'derechos de agua', 'crisis hídrica', 'cuenca', 'sequía', 'río', 'glaciar', 'salar', 'humedal'], 
+ 'clima':  ['emergencia climática', 'crisis climática', 'cambio climático', 'climática', 'climático'],
+ 'medioambiente': ['medio ambiente', 'flora', 'fauna', 'naturaleza', 'biodiversidad', 
+                  'patrimonio ambiental', 'recursos naturales']
 }
-

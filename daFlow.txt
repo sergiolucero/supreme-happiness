@@ -1,0 +1,2 @@
+keywords_final.txt ---> conceptos.py ---> greenpeace.db:menciones_(todos/originarios)
+
