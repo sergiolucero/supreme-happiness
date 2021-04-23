@@ -62,7 +62,7 @@ for xx in range(200,1000,200):
 
 arr_lena = mpimg.imread('greenpeace.png')
 imagebox = OffsetImage(arr_lena, zoom=1.0)
-ab = AnnotationBbox(imagebox, (805, 0.2))
+ab = AnnotationBbox(imagebox, (825, 0.3))
 ax.add_artist(ab)
 
 plt.title('Ranking partidos políticos por número total de menciones', size=20)
