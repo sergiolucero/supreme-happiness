@@ -11,7 +11,7 @@ def get_party(c):
     sc = ' '.join(c.split('_')[1:])
     try:
         partido = sql(f"SELECT partido FROM candidatos WHERE candidato='{sc}'")
-        return c+'<BR>'+partido
+        return c+'<BR>'+f'[{partido}]'
     except:  # not found
         return c+ '(N/A)'
 
