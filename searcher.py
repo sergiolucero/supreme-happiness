@@ -36,7 +36,7 @@ def querier(query, WIDTH=80, tipo=None):
 
         fmatches = list(re.finditer(squery, texto))
         if len(fmatches):
-            ptfile = get_party(tfile).values()[0]
+            ptfile = get_party(tfile).values[0]
             #ptfile = 
             print(tfile, ptfile)
             matches[ptfile] = [op(f).replace(squery, MARK %squery)
