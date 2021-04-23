@@ -13,7 +13,7 @@ cors = CORS(app)
 def verlas(query, ancho):
 
     ANCHO = int(ancho)
-    data = querier(query, ANCHO).sort_values('Menciones')  # missing add party!
+    data = querier(query, ANCHO)
 
     return render_template('ver_menciones.html', data=data, mencion=query)
 

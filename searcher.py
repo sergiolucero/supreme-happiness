@@ -3,7 +3,15 @@ import sqlite3, pandas as pd
 
 sql = lambda q: pd.read_sql(q, sqlite3.connect('greenpeace.db'))
 matches = lambda wt: len(list(re.finditer(wt[0].lower(), wt[1])))
+cdf = pd.read_csv('candidatos.csv')
 
+def get_party(c):
+    sc = ' '.join(c.split('_')[1:])
+    try:
+        partido = sql(f"SELECT partido FROM candidatos WHERE candidato='{sc}'")
+        return c+'<BR>'+partido
+    except:  # not found
+        return c+ '(N/A)'
 
 def cubicalo(tipo):     # proyecciones bidimensionales: (i) por distrito/lista/partido (ii) totales/absolutas
 
@@ -31,6 +39,9 @@ def querier(query, WIDTH=80, tipo=None):
 
             matches[tfile] = [op(f).replace(squery, MARK %squery)
                                 for f in fmatches]
+
+    matches['Candidato'] = matches.Candidato.apply(lambda c: get_party(c))
+    matches = matches.sort('Menciones')
 
     return matches
 
