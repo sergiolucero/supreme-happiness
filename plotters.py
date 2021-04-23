@@ -2,7 +2,10 @@ import glob, pandas as pd, numpy as np
 import re
 from util import *
 import seaborn as sns
+
 import matplotlib.pyplot as plt
+import matplotlib.image as mpimg
+from matplotlib.offsetbox import AnnotationBbox, OffsetImage
 
 files = list(glob.glob('TEXTOS/TODOS/*.txt'))
 textos = [open(fn).read() for fn in files]
@@ -54,6 +57,14 @@ ts.columns = ['partido','total_menciones']
 ts = ts[ts.total_menciones>0]
 fig,ax = plt.subplots(1, figsize=(24,12))
 sns.barplot(x='total_menciones', data=ts.sort_values('total_menciones'), y='partido', palette='RdYlGn');
+for xx in range(200,1000,200):
+    plt.axvline(x=xx, color='blue')
+
+arr_lena = mpimg.imread('greenpeace.png')
+imagebox = OffsetImage(arr_lena, zoom=1.0)
+ab = AnnotationBbox(imagebox, (805, 0.2))
+ax.add_artist(ab)
+
 plt.title('Ranking partidos políticos por número total de menciones', size=20)
 plt.savefig('static/ranking.png')
 plt.close()
