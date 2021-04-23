@@ -23,7 +23,7 @@ def verlas_ori(query, ancho):
     ANCHO = int(ancho)
     data = querier(query, ANCHO, tipo='ori')   # fix: merged
 
-    return render_template('ver_menciones.html', data=data, mencion=query, ancho=ANCHO)
+    return render_template('ver_menciones.html', data=data, mencion=query)
 
 @app.route('/cubo_menciones/<tipo>', methods=['GET','POST'])
 def cubitos(tipo):

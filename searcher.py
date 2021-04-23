@@ -4,13 +4,11 @@ import operator
 import collections
 
 sql = lambda q: pd.read_sql(q, sqlite3.connect('greenpeace.db'))
-matches = lambda wt: len(list(re.finditer(wt[0].lower(), wt[1])))
-#cdf = pd.read_csv('candidatos.csv')
-
+#####################################
 def get_party(c):
     sc = ' '.join(c.split('_')[1:])
     try:
-        partido = sql(f"SELECT partido FROM candidatos WHERE candidato='{sc}'")
+        partido = sql(f"SELECT partido FROM candidatos WHERE candidato='{sc}'").values[0][0]
         return c+'<BR>'+f'[{partido}]'
     except:  # not found
         return c+ '(N/A)'
@@ -21,10 +19,12 @@ def cubicalo(tipo):     # proyecciones bidimensionales: (i) por distrito/lista/p
 
     return matches
 
-def querier(query, WIDTH=80, tipo=None):
-    squery = query.lower().replace('_',' ')
 
-    FOLDER = 'TEXTOS/TODOS/*.txt' if tipo is None else 'TEXTOS/INDIGENAS/*.txt'
+def querier(query, WIDTH=80, tipo=None):
+
+    squery = query.lower().replace('_',' ')
+    FOLDER = 'TEXTOS/TODOS/*.txt' if tipo is None \
+        else 'TEXTOS/INDIGENAS/*.txt'
     files = list(glob.glob(FOLDER))
     textos = [open(fn).read().replace(chr(10),' ').replace('\\t','').replace('\\xa0',' ') for fn in files]
     print('QUERY:', squery)
@@ -38,7 +38,7 @@ def querier(query, WIDTH=80, tipo=None):
 
         fmatches = list(re.finditer(squery, texto))
         if len(fmatches):
-            ptfile = get_party(tfile).values[0][0]
+            ptfile = get_party(tfile)
             #ptfile = 
             print(tfile, ptfile)
             matches[ptfile] = [op(f).replace(squery, MARK %squery)
@@ -50,6 +50,8 @@ def querier(query, WIDTH=80, tipo=None):
 
     return matches
 
+matches = lambda wt: len(list(re.finditer(wt[0].lower(), wt[1])))
+fmatches = lambda wt: list(re.finditer(wt[0].lower(), wt[1]))
 
 def finders(textos, concepto, menciones):
 
@@ -63,8 +65,16 @@ def finders(textos, concepto, menciones):
     for concepto, mencion in zip(conceptos, menciones):
         wnmatch = 0;         wamatch = 0.0
         print('CONCEPTO:', concepto, 'MENCION:', mencion)
-        wnmatch += sum(matches([mencion,text]) for text in textos)   # missing space?
-        wamatch += sum([1 if mencion in text else 0 for text in textos])/nProgramas    # normalized 20/04
+        if concepto=='agua':  # it's complicated
+            m1 = [fmatches([concepto, text]) for text in textos]   # missing space?
+            m2 = [fmatches([mencion, text]) for text in textos]   # missing space?
+            m12
+            wnmatch += sum(matches([mencion,text]) for text in textos)   # missing space?
+            #wamatch += sum([1 if mencion in text else 0 for text in textos])/nProgramas    # normalized 20/04
+        else:
+            wnmatch += sum(matches([mencion,text]) for text in textos)   # missing space?
+            wamatch += sum([1 if mencion in text else 0 for text in textos])/nProgramas    # normalized 20/04
+
         nmatches.append(wnmatch);        amatches.append(wamatch)
 
     smen['nMenciones']=nmatches
