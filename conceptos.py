@@ -14,9 +14,8 @@ for tabla, files in pfiles.items():
 
     smen = pd.DataFrame()
     for concepto, menciones in kw.items():
-        cmenciones = [concepto]+menciones
-        # primero buscamos el concepto
-        smen = smen.append(finders(textos, concepto, cmenciones))
+        # buscamos el concepto, tomando en cuenta si está en menciones
+        smen = smen.append(finders(textos, concepto, menciones))
 
     #BASE= 'http://greenpeace.quant.cl:8081'
     BASE= 'http://greenpeace-monitor.herokuapp.com'
