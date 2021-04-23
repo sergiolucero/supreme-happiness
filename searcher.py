@@ -1,7 +1,10 @@
 import glob, re
 import sqlite3, pandas as pd
 import operator
+import collections
 
+
+Share
 sql = lambda q: pd.read_sql(q, sqlite3.connect('greenpeace.db'))
 matches = lambda wt: len(list(re.finditer(wt[0].lower(), wt[1])))
 cdf = pd.read_csv('candidatos.csv')
@@ -45,6 +48,7 @@ def querier(query, WIDTH=80, tipo=None):
 
     matches =  sorted(matches.items(), key=operator.itemgetter(1))
     #matches.sort('Menciones')
+    matches = collections.OrderedDict(matches)
 
     return matches
 
