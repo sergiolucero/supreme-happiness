@@ -1,5 +1,6 @@
 import glob, re
 import sqlite3, pandas as pd
+import operator
 
 sql = lambda q: pd.read_sql(q, sqlite3.connect('greenpeace.db'))
 matches = lambda wt: len(list(re.finditer(wt[0].lower(), wt[1])))
