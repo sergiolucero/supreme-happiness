@@ -3,11 +3,9 @@ import sqlite3, pandas as pd
 import operator
 import collections
 
-
-Share
 sql = lambda q: pd.read_sql(q, sqlite3.connect('greenpeace.db'))
 matches = lambda wt: len(list(re.finditer(wt[0].lower(), wt[1])))
-cdf = pd.read_csv('candidatos.csv')
+#cdf = pd.read_csv('candidatos.csv')
 
 def get_party(c):
     sc = ' '.join(c.split('_')[1:])
