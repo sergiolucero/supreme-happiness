@@ -36,12 +36,12 @@ def querier(query, WIDTH=80, tipo=None):
 
         fmatches = list(re.finditer(squery, texto))
         if len(fmatches):
-
-            matches[tfile] = [op(f).replace(squery, MARK %squery)
+            ptfile = get_party(tfile)
+            matches[ptfile] = [op(f).replace(squery, MARK %squery)
                                 for f in fmatches]
 
-    matches['Candidato'] = matches.Candidato.apply(lambda c: get_party(c))
-    matches = matches.sort('Menciones')
+    matches =  sorted(matches.items(), key=operator.itemgetter(1))
+    #matches.sort('Menciones')
 
     return matches
 
