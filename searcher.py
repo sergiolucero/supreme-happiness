@@ -61,7 +61,14 @@ def querier(query, WIDTH=80, tipo=None):
             ptfile = get_party(tfile)
             #ptfile = 
             print(tfile, ptfile)
-            matches[ptfile] = [op(f).replace(squery, MARK %squery)
+            if isinstance(squery, list):
+                mptf = [op(f).replace(squery[0], MARK %squery[0])
+                                for f in fmatches]
+                for sq in squery[1:]:
+                    mptf = [m.replace(sq, MARK %sq) for m in mptf]
+                matches[ptfile] = mptf
+            else:
+                matches[ptfile] = [op(f).replace(squery, MARK %squery)
                                 for f in fmatches]
 
     matches =  sorted(matches.items(), key=operator.itemgetter(1))
