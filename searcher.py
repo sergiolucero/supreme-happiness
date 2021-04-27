@@ -35,7 +35,7 @@ def querier(query, WIDTH=80, tipo=None):
     squery = query.lower().replace('_',' ')
 
     if squery in kw:  # agua, clima, medioambiente
-        squery = [squery] + kw[squery]  # becomes a list
+        squery = [squery] + '%s ' %kw[squery]  # becomes a list
 
     FOLDER = 'TEXTOS/TODOS/*.txt' if tipo is None \
         else 'TEXTOS/INDIGENAS/*.txt'
