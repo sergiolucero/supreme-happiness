@@ -53,7 +53,7 @@ def querier(query, WIDTH=80, tipo=None):
         if isinstance(squery, list):
             fmatches = []
             for sq in squery:
-                fmatches.append(list(re.finditer(sq, texto)))
+                fmatches+=list(re.finditer(sq, texto))
         else:
             fmatches = list(re.finditer(squery, texto))
 
