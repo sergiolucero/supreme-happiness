@@ -13,6 +13,14 @@ def get_party(c):
     except:  # not found
         return c+ '(N/A)'
 
+def party(c):
+    sc = ' '.join(c.split('_')[1:])
+    try:
+        partido = sql(f"SELECT partido FROM candidatos WHERE candidato='{sc}'").values[0][0]
+        return partido
+    except:  # not found
+        return '(N/A)'
+
 def cubicalo(tipo):     # proyecciones bidimensionales: (i) por distrito/lista/partido (ii) totales/absolutas
 
     tqd = {'distrito': ''}
@@ -55,29 +63,24 @@ fmatches = lambda wt: list(re.finditer(wt[0].lower(), wt[1]))
 
 def finders(textos, concepto, menciones):
 
-    conceptos = [concepto]*len(menciones)
-    smen = pd.DataFrame(dict(concepto=conceptos, mencion=menciones))
-    nProgramas = len(textos)
+    # agua: [derecho al agua, etcagua, 3crisis hídrica...]
+    # clima: [emergencia...], medio: [medio(SP),...]
 
-    nmatches=[]
-    amatches=[]
-
-    for concepto, mencion in zip(conceptos, menciones):
-        wnmatch = 0;         wamatch = 0.0
-        print('CONCEPTO:', concepto, 'MENCION:', mencion)
-        if concepto=='agua':  # it's complicated
-            m1 = [fmatches([concepto, text]) for text in textos]   # missing space?
-            m2 = [fmatches([mencion, text]) for text in textos]   # missing space?
-            m12
+    if concepto=='agua':  # it's complicated
+        wnmatch = sum(matches(['agua ',text]) for text in textos)   # missing space?
+        wamatch = sum([1 if 'agua ' in text else 0 for text in textos])    # unnormalized 23/04
+        for mencion in menciones[3:]:
             wnmatch += sum(matches([mencion,text]) for text in textos)   # missing space?
+            wamatch += sum([1 if mencion in text else 0 for text in textos])    # unnormalized 23/04
+            
             #wamatch += sum([1 if mencion in text else 0 for text in textos])/nProgramas    # normalized 20/04
-        else:
+    else:
+        wnmatch = sum(matches([concepto,text]) for text in textos)   # missing space?
+        wamatch = sum([1 if concepto in text else 0 for text in textos])    # unnormalized 23/04
+        for mencion in menciones:
             wnmatch += sum(matches([mencion,text]) for text in textos)   # missing space?
-            wamatch += sum([1 if mencion in text else 0 for text in textos])/nProgramas    # normalized 20/04
+            wamatch += sum([1 if mencion in text else 0 for text in textos])    # unnormalized 23/04
 
-        nmatches.append(wnmatch);        amatches.append(wamatch)
-
-    smen['nMenciones']=nmatches
-    smen['\% Mencionan']=[round(100*amat,2) for amat in amatches]
+    smen = pd.DataFrame(dict(concepto=concepto, nMenciones=wnmatch, PorcMencionan=wamatch),index=[0])
 
     return smen

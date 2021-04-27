@@ -11,12 +11,13 @@ pfiles = {'todos': list(glob.glob('TEXTOS/TODOS/*.txt')),
 for tabla, files in pfiles.items():
     kw = eval(open('keywords_final.txt').read())  # last train
     textos=[open(fn).read() for fn in files]
-
+    nProgramas = len(textos)
     smen = pd.DataFrame()
     for concepto, menciones in kw.items():
         # buscamos el concepto, tomando en cuenta si está en menciones
         smen = smen.append(finders(textos, concepto, menciones))
-
+    print(nProgramas)
+    smen['PorcMencionan']*=(100/nProgramas)
     #BASE= 'http://greenpeace.quant.cl:8081'
     BASE= 'http://greenpeace-monitor.herokuapp.com'
     smen['link'] = smen.concepto.apply(lambda concepto: '%s/ver_menciones/%s/50' %(BASE,concepto))
