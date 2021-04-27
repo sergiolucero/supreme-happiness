@@ -5,6 +5,12 @@ import collections
 
 sql = lambda q: pd.read_sql(q, sqlite3.connect('greenpeace.db'))
 #####################################
+def read_text(fn):
+    rfn = open(fn).read()
+    for rep in [(chr(10),' '),('\\t',''),('\\xa0',' ')]::
+        rfn = rfn.replace(rep[0],rep[1])
+    return rfn
+
 def get_party(c):
     sc = ' '.join(c.split('_')[1:])
     try:
@@ -40,12 +46,13 @@ def querier(query, WIDTH=80, tipo=None):
     FOLDER = 'TEXTOS/TODOS/*.txt' if tipo is None \
         else 'TEXTOS/INDIGENAS/*.txt'
     files = list(glob.glob(FOLDER))
-    textos = [open(fn).read().replace(chr(10),' ').replace('\\t','').replace('\\xa0',' ') for fn in files]
-    print('QUERY:', squery)
+    textos = [read_text(fn) for fn in files]
 
     MARK = '<MARK>%s</MARK>'
 
     matches = {}
+    nMenciones = 0
+   
     for file, texto in zip(files, textos):
         tfile = file[13:-4] if tipo is None else file[17:-4]
         op = lambda f: (texto[(f.start()-WIDTH):(f.end()+WIDTH)]).replace('\n','')
@@ -58,9 +65,10 @@ def querier(query, WIDTH=80, tipo=None):
             fmatches = list(re.finditer(squery, texto))
 
         if len(fmatches):
+            nMenciones += fmatches
             ptfile = get_party(tfile)
             #ptfile = 
-            print(tfile, ptfile)
+            #print(tfile, ptfile)
             if isinstance(squery, list):
                 mptf = [op(f).replace(squery[0], MARK %squery[0])
                                 for f in fmatches]
@@ -75,7 +83,7 @@ def querier(query, WIDTH=80, tipo=None):
     #matches.sort('Menciones')
     matches = collections.OrderedDict(matches)
 
-    return matches
+    return matches, nMatches
 
 matches = lambda wt: len(list(re.finditer(wt[0].lower(), wt[1])))
 fmatches = lambda wt: list(re.finditer(wt[0].lower(), wt[1]))

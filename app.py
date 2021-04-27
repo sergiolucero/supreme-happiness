@@ -13,9 +13,10 @@ cors = CORS(app)
 def verlas(query, ancho):
 
     ANCHO = int(ancho)
-    data = querier(query, ANCHO)
+    data, nMatches = querier(query, ANCHO)
 
-    return render_template('ver_menciones.html', data=data, mencion=query)
+    return render_template('ver_menciones.html', data=data, 
+                            nMatches=nMatches, mencion=query)
 
 @app.route('/ver_menciones_ori/<query>/<ancho>', methods=['GET','POST'])
 def verlas_ori(query, ancho):
@@ -23,7 +24,8 @@ def verlas_ori(query, ancho):
     ANCHO = int(ancho)
     data = querier(query, ANCHO, tipo='ori')   # fix: merged
 
-    return render_template('ver_menciones.html', data=data, mencion=query)
+    return render_template('ver_menciones.html', data=data, 
+                            nMatches = nMatches, mencion=query)
 
 @app.route('/cubo_menciones/<tipo>', methods=['GET','POST'])
 def cubitos(tipo):
