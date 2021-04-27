@@ -1,0 +1,10 @@
+<BODY>
+<link rel= "stylesheet" type= "text/css" href= "{{ url_for('static',filename='styles/df_style.css') }}">
+<H2>Menciones ambientales</H2>
+<IMG SRC="https://www.greenpeace.org/chile/wp-content/themes/planet4-master-theme/images/gp-logo.svg" WIDTH=200>
+<H3>Candidatos no Originarios</H3>
+{{data|safe}}
+<H3>Pueblos Originarios</H3>
+{{dataO|safe}}
+<HR>Clima: cambio climático, crisis climática, emergencia climática. 
+</BODY>

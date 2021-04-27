@@ -14,10 +14,9 @@ def verlas(query, ancho):
 
     ANCHO = int(ancho)
     data, nMatches = querier(query, ANCHO)
-    datao, nMatchesO = querier(query, ANCHO, tipo_ori)
 
-    return render_template('ver_menciones_all.html', data=data, datao=datao,
-                            nMatches=nMatches, nMatchesO=nMatchesO,
+    return render_template('ver_menciones.html', data=data, 
+                            nMatches=nMatches, 
                             mencion=query)
 
 @app.route('/ver_menciones_ori/<query>/<ancho>', methods=['GET','POST'])
@@ -54,16 +53,23 @@ def hello_world():
     #men = pd.read_csv('keywords.txt', names=['Tema'])
     #men['Tema']=men.Tema.apply(lambda t: t.split('\t')[1])
     men = sql('SELECT * FROM menciones_todos ORDER BY nMenciones DESC')
+    menO = sql('SELECT * FROM menciones_ori ORDER BY nMenciones DESC')
 
     #men['Tema'] = men.Tema.apply(lambda t: 'clima' if 'clim' in t else 'medioambiente' if 'medio' in t else t)
     men = men.groupby('concepto').sum().reset_index()
+    menO = menO.groupby('concepto').sum().reset_index()
     #URL = 'http://greenpeace.quant.cl:8081/ver_menciones/%s/50' 
     URL = 'http://greenpeace-monitor.herokuapp.com/ver_menciones/%s/50' 
-    men['link'] = ['<A HREF="%s">click</A>' %(URL %tema) for tema in men['concepto']]
+    URLO = 'http://greenpeace-monitor.herokuapp.com/ver_menciones/%s/50' 
+    men['link'] = ['<A HREF="%s">click</A>' %(URL %tema) 
+                    for tema in men['concepto']]
+    menO['link'] = ['<A HREF="%s">click</A>' %(URLO %tema) 
+                    for tema in men['concepto']]
 
     data = men.to_html(index=False, escape=False, classes='mystyle')
+    dataO = menO.to_html(index=False, escape=False, classes='mystyle')
 
-    return render_template('menciones.html', data=data)
+    return render_template('menciones_all.html', data=data,dataO=dataO)
 
 @app.route('/originarios', methods=['GET','POST'])
 def hello_otis():
