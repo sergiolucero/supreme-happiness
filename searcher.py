@@ -83,7 +83,7 @@ def querier(query, WIDTH=80, tipo=None):
     #matches.sort('Menciones')
     matches = collections.OrderedDict(matches)
 
-    return matches, nMatches
+    return matches, nMenciones
 
 matches = lambda wt: len(list(re.finditer(wt[0].lower(), wt[1])))
 fmatches = lambda wt: list(re.finditer(wt[0].lower(), wt[1]))
