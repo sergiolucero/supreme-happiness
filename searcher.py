@@ -30,7 +30,13 @@ def cubicalo(tipo):     # proyecciones bidimensionales: (i) por distrito/lista/p
 
 def querier(query, WIDTH=80, tipo=None):
 
+    kw = eval(open('keywords_final.txt').read())
+
     squery = query.lower().replace('_',' ')
+
+    if squery in kw:  # agua, clima, medioambiente
+        squery = [squery] + kw[squery]  # becomes a list
+
     FOLDER = 'TEXTOS/TODOS/*.txt' if tipo is None \
         else 'TEXTOS/INDIGENAS/*.txt'
     files = list(glob.glob(FOLDER))
@@ -44,7 +50,13 @@ def querier(query, WIDTH=80, tipo=None):
         tfile = file[13:-4] if tipo is None else file[17:-4]
         op = lambda f: (texto[(f.start()-WIDTH):(f.end()+WIDTH)]).replace('\n','')
 
-        fmatches = list(re.finditer(squery, texto))
+        if isinstance(squery, list):
+            fmatches = []
+            for sq in squery:
+                fmatches.append(list(re.finditer(sq, texto)))
+        else:
+            fmatches = list(re.finditer(squery, texto))
+
         if len(fmatches):
             ptfile = get_party(tfile)
             #ptfile = 
