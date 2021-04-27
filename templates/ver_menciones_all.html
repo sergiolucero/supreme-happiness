@@ -1,0 +1,38 @@
+<BODY>
+<link rel= "stylesheet" type= "text/css" href= "{{ url_for('static',filename='styles/df_style.css') }}">
+<H2>Menciones en detalle</H2>
+
+<TABLE BORDER=1 class="dataframe mystyle">
+<TR><TH>Candidato</TH><TH>Menciones</TH><TR>
+{%for candi, ment in data.items()%}
+<TR><TH>{{candi|safe}}</TH>
+<TD>
+    <TABLE BORDER=1 classe="dataframe mystyle">
+    {% for men in ment %}
+        <TR><TD>{{men|safe}}</TD></TR>
+
+    {%endfor%}
+    </TABLE>
+</TD></TR>
+{%endfor%}
+</TABLE>
+Número de menciones: {{nMatches}}
+<HR>
+<H2>Pueblos Originarios</H2>
+<TABLE BORDER=1 class="dataframe mystyle">
+<TR><TH>Candidato</TH><TH>Menciones</TH><TR>
+{%for candi, ment in datao.items()%}
+<TR><TH>{{candi|safe}}</TH>
+<TD>
+    <TABLE BORDER=1 classe="dataframe mystyle">
+    {% for men in ment %}
+        <TR><TD>{{men|safe}}</TD></TR>
+
+    {%endfor%}
+    </TABLE>
+</TD></TR>
+{%endfor%}
+</TABLE>
+
+Número de menciones: {{nMatchesO}}
+</BODY>

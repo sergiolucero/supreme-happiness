@@ -14,9 +14,11 @@ def verlas(query, ancho):
 
     ANCHO = int(ancho)
     data, nMatches = querier(query, ANCHO)
+    datao, nMatchesO = querier(query, ANCHO, tipo_ori)
 
-    return render_template('ver_menciones.html', data=data, 
-                            nMatches=nMatches, mencion=query)
+    return render_template('ver_menciones_all.html', data=data, datao=datao,
+                            nMatches=nMatches, nMatchesO=nMatchesO,
+                            mencion=query)
 
 @app.route('/ver_menciones_ori/<query>/<ancho>', methods=['GET','POST'])
 def verlas_ori(query, ancho):
