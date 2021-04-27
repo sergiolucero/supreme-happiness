@@ -69,12 +69,14 @@ def finders(textos, concepto, menciones):
     if concepto=='agua':  # it's complicated
         wnmatch = sum(matches(['agua ',text]) for text in textos)   # missing space?
         wamatch = sum([1 if 'agua ' in text else 0 for text in textos])    # unnormalized 23/04
+        print('agua',wamatch)
         for mencion in menciones[3:]:
             wnmatch += sum(matches([mencion,text]) for text in textos)   # missing space?
             wamatch += sum([1 if mencion in text else 0 for text in textos])    # unnormalized 23/04
-            
+            print(mencion, wamatch)
             #wamatch += sum([1 if mencion in text else 0 for text in textos])/nProgramas    # normalized 20/04
     else:
+        #shoot
         wnmatch = sum(matches([concepto,text]) for text in textos)   # missing space?
         wamatch = sum([1 if concepto in text else 0 for text in textos])    # unnormalized 23/04
         for mencion in menciones:

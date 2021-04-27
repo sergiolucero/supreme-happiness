@@ -16,6 +16,7 @@ for tabla, files in pfiles.items():
     for concepto, menciones in kw.items():
         # buscamos el concepto, tomando en cuenta si está en menciones
         smen = smen.append(finders(textos, concepto, menciones))
+        print(smen)
     print(nProgramas)
     smen['PorcMencionan']*=(100/nProgramas)
     #BASE= 'http://greenpeace.quant.cl:8081'
