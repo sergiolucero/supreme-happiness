@@ -7,7 +7,7 @@ sql = lambda q: pd.read_sql(q, sqlite3.connect('greenpeace.db'))
 #####################################
 def read_text(fn):
     rfn = open(fn).read()
-    for rep in [(chr(10),' '),('\\t',''),('\\xa0',' ')]::
+    for rep in [(chr(10),' '),('\\t',''),('\\xa0',' ')]:
         rfn = rfn.replace(rep[0],rep[1])
     return rfn
 
