@@ -65,7 +65,7 @@ def querier(query, WIDTH=80, tipo=None):
             fmatches = list(re.finditer(squery, texto))
 
         if len(fmatches):
-            nMenciones += fmatches
+            nMenciones += len(fmatches)
             ptfile = get_party(tfile)
             #ptfile = 
             #print(tfile, ptfile)
