@@ -64,7 +64,7 @@ def hello_world():
     menO = menO.groupby('concepto').sum().reset_index()
     #URL = 'http://greenpeace.quant.cl:8081/ver_menciones/%s/50' 
     URL = 'http://greenpeace-monitor.herokuapp.com/ver_menciones/%s/50' 
-    URLO = 'http://greenpeace-monitor.herokuapp.com/ver_menciones/%s/50' 
+    URLO = 'http://greenpeace-monitor.herokuapp.com/ver_menciones_ori/%s/50' 
     men['link'] = ['<A HREF="%s">click</A>' %(URL %tema) 
                     for tema in men['concepto']]
     menO['link'] = ['<A HREF="%s">click</A>' %(URLO %tema) 
