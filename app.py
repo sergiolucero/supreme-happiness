@@ -23,7 +23,7 @@ def verlas(query, ancho):
 def verlas_ori(query, ancho):
 
     ANCHO = int(ancho)
-    data = querier(query, ANCHO, tipo='ori')   # fix: merged
+    data, nMatches = querier(query, ANCHO, tipo='ori')   # fix: merged
 
     return render_template('ver_menciones.html', data=data, 
                             nMatches = nMatches, mencion=query)
