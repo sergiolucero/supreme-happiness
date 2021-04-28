@@ -113,3 +113,9 @@ def finders(textos, concepto, menciones):
     smen = pd.DataFrame(dict(concepto=concepto, nMenciones=wnmatch, PorcMencionan=wamatch),index=[0])
 
     return smen
+
+def get_candy():
+
+    cdf = sql('SELECT * FROM candidatos')
+
+    return cdata

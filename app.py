@@ -2,7 +2,7 @@ from flask import Flask, make_response, render_template, request, jsonify
 from flask_cors import CORS
 import glob, sqlite3, pandas as pd
 
-from searcher import querier, cubicalo
+from searcher import querier, cubicalo, get_candy
 
 sql = lambda q: pd.read_sql(q, sqlite3.connect('greenpeace.db'))
 
@@ -38,9 +38,13 @@ def cubitos(tipo):
 def hello():
     return render_template('entering.html')
 
-@app.route('/equipo')
-def equipo():
     return render_template('equipo.html')
+
+@app.route('/candidatos')
+def candidatos():
+    cdata = get_candy()
+
+    return render_template('candidatos.html', cdata=cdata)
 
 @app.route('/listas')
 def listas():
