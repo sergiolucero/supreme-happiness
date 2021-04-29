@@ -2,5 +2,5 @@
           'derechos de agua', 'crisis hídrica', 'cuenca', 'sequía', 'río', 'glaciar', 'salar', 'humedal'], 
  'clima':  ['emergencia climática', 'crisis climática', 'cambio climático', 'climática', 'climático'],
  'medioambiente': ['medio ambiente', 'flora', 'fauna', 'naturaleza', 'biodiversidad', 
-                  'patrimonio ambiental', 'recursos naturales']
+                  'patrimonio ambiental', 'recursos naturales', 'buen vivir']
 }
