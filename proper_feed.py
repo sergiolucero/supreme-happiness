@@ -13,6 +13,7 @@ df['nProgramas'] = [len(x[1][0]) for x in non]
 n1 = len(glob.glob('TEXTOS/TODOS/D*.txt'))
 print('N1:',n1)
 df['Porc.Programas'] = round(100*df['nProgramas']/n1,2)
+print(df)
 df.to_sql('menciones_todos', conn, index=False, if_exists='replace')
 
 dfo = pd.DataFrame(dict(concepto=[x[0] for x in ori]))
@@ -21,4 +22,5 @@ dfo['nProgramas'] = [len(x[1][0]) for x in ori]
 n2 = len(glob.glob('TEXTOS/INDIGENAS/*.txt'))
 print('N2:', n2)
 dfo['Porc.Programas'] = round(100*dfo['nProgramas']/n2,2)
+print(dfo)
 dfo.to_sql('menciones_ori', conn, index=False, if_exists='replace')
