@@ -20,5 +20,5 @@
  'y deberes fundamentales, derechos humanos. Derechos civiles y derechos '
  'sociales. Derecho a la Educación. Derecho a la salud. Derecho al trabajo '
  'digno y jubilaciones dignas. Derecho a la seguridad social y laboral. '
- 'Derecho a la protección del medio ambiente. Derechos a los niños, niñas y '
+ 'Derecho a la protección del medioambiente. Derechos a los niños, niñas y '
  'adolecentes. JoséAntonia Arriagada Contreras 11.896.687-2 C')
