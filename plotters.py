@@ -58,7 +58,10 @@ for dist, dxdf in xdf.groupby('distrito'):
               cmap='RdYlGn', fmt='.0f');
     plt.xticks(rotation=45)
     plt.title(f'Menciones ambientales por tema y lista (Distrito {dist})', size=24);
+    ax.yaxis.set_label_position("right")
+    ax.yaxis.tick_right()
     plt.savefig(f'static/heatmap_listas_D{dist}.png')
+    print(dist,end=':')
     plt.close()
 #############################
 
