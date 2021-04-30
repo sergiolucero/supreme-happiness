@@ -41,7 +41,7 @@ for conc, mens in kw.items():
 xdf['partido'] = xdf.partido.apply(lambda p: p.split('IND ')[1]+'-IND' if 'IND ' in p else p) # fixer
 
 ddf = xdf.groupby('distrito').sum()
-psdf = ddf
+psdf = ddf.drop('largo', axis=1)
 fig, ax = plt.subplots(1, figsize=(24,12))
 p=sns.heatmap(psdf.replace(0,np.nan), annot=True, annot_kws={'size':16, 'weight': 'bold'}, 
               cmap='RdYlGn', fmt='.0f');
@@ -50,7 +50,7 @@ plt.savefig('static/heatmap_distritos.png')
 plt.close()
 #############################
 ldf = xdf.groupby('lista').sum()
-psdf = ldf
+psdf = ldf.drop('largo', axis=1)
 fig, ax = plt.subplots(1, figsize=(24,12))
 p=sns.heatmap(psdf.replace(0,np.nan), annot=True, annot_kws={'size':16, 'weight': 'bold'}, 
               cmap='RdYlGn', fmt='.0f');
