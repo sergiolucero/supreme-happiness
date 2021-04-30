@@ -44,8 +44,14 @@ print(xdf[xdf.partido=='UNION DEMOCRATICA INDEPENDIENTE'])
 xdf['partido'] = xdf.partido.apply(lambda p: p.split('IND ')[1]+'-IND' if 'IND ' in p else p) # fixer
 xdf['lista'] = xdf.lista.apply(lambda x: x.split('(')[0] if '(' in x else x)
 #do
+print('B4:', len(xdf))
+xdf = xdf[xdf.partido!='UNION DEMOCRATA INDEPENDIENTE']
+print('Afta:', len(xdf))
+#sexi    
+
 ddf = xdf.groupby('distrito').sum()
 psdf = ddf.drop('largo', axis=1)
+
 fig, ax = plt.subplots(1, figsize=(24,12))
 p=sns.heatmap(psdf.replace(0,np.nan), annot=True, annot_kws={'size':16, 'weight': 'bold'}, 
               cmap='RdYlGn', fmt='.0f');
@@ -104,7 +110,10 @@ plt.savefig('static/heatmap_partidosI.png')
 plt.close()
 
 fig, ax = plt.subplots(1, figsize=(24,12))
-p=sns.heatmap(psdf[psdf.index!='INDEPENDIENTES'][temas].replace(0, np.nan), 
+pidf = psdf[psdf.index!='INDEPENDIENTES']
+pidf.to_csv('resument_partidos_sin_ind.pdf',index=False)
+
+p = sns.heatmap(psdf[psdf.index!='INDEPENDIENTES'][temas].replace(0, np.nan), 
               annot=True, annot_kws={'size':16, 'weight': 'bold'}, cmap='RdYlGn', fmt='.0f');
 plt.xticks(rotation=45); plt.title('Menciones ambientales por tema y partido (excluye independientes)', size=24);
 plt.savefig('static/heatmap_partidos.png')

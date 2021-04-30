@@ -40,6 +40,7 @@ fixers = {'medioambiente': ['naturaleza humana', 'propia naturaleza', 'naturalez
 				'clima social', 'clima beligerante', 'clima ambiente', 'clima de temor']}
 
 def get_matches(squery, texto, WIDTH):
+
     op = lambda f: (texto[(f.start()-WIDTH):(f.end()+WIDTH)]).replace('\n','')
 
     if isinstance(squery, list):
@@ -51,6 +52,7 @@ def get_matches(squery, texto, WIDTH):
 
     if len(fmatches):
             ftextos = [op(f) for f in fmatches]
+            print('FT:', ftextos)
             qfix = fixers.get(squery,[])
             bad_mat = []
             for qf in qfix:
@@ -58,6 +60,9 @@ def get_matches(squery, texto, WIDTH):
             if len(bad_mat): # must remove, use zip
                 print(squery, bad_mat)
                 fmatches = [f for f in fmatches if op(f) not in bad_mat]
+                print('FMAT2:', fmatches)
+                #somebad
+
     return fmatches
 
 def querier(query, WIDTH=80, tipo=None):
@@ -99,6 +104,7 @@ def querier(query, WIDTH=80, tipo=None):
         #    if len(bad_mat): # must remove, use zip
         #        fmatches = [f for f in fmatches if op(f) not in bad_mat]
         fmatches = get_matches(texto)
+
         if len(fmatches):
             nMenciones += len(fmatches)
             ptfile = get_party(tfile)
@@ -113,9 +119,9 @@ def querier(query, WIDTH=80, tipo=None):
             else:
                 matches[ptfile] = [op(f).replace(squery, MARK %squery)
                                 for f in fmatches] 
-    print('B4:', len(matches))
+    #print('B4:', len(matches))
     matches = {k:v for k,v in matches.items() if len(v)>0}
-    print('AFTA:', len(matches))
+    #print('AFTA:', len(matches))
     matches =  sorted(matches.items(), key=operator.itemgetter(1))
     #matches.sort('Menciones')
     matches = collections.OrderedDict(matches)
