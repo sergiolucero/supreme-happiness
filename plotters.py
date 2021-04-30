@@ -38,12 +38,14 @@ for conc, mens in kw.items():
         xconc = [x+y for x,y in zip(xconc, xdf_word.values)]
     xdf[conc] = xconc
 
+xdf['partido'] = xdf.partido.apply(lambda p: p.split('IND ')[1]+'-IND' if 'IND ' in p else p) # fixer
 sdf=xdf.groupby('partido').sum()
 sdf[sdf.columns[1:]].head()
 
 temas = [k for k,v in sdf.sum().to_dict().items() if v>10 and k!='largo']
 
 partidos=[k for k,v in sdf.sum(axis=1).to_dict().items() if v>50]
+partidos = [p for p in partidos if partidos!='INDEPENDIENTES']
 psdf = sdf[sdf.index.isin(partidos)]
 fig, ax = plt.subplots(1, figsize=(24,12))
 p=sns.heatmap(psdf[temas].replace(0,np.nan), annot=True, annot_kws={'size':16, 'weight': 'bold'}, 
