@@ -39,6 +39,28 @@ for conc, mens in kw.items():
     xdf[conc] = xconc
 
 xdf['partido'] = xdf.partido.apply(lambda p: p.split('IND ')[1]+'-IND' if 'IND ' in p else p) # fixer
+
+ddf = xdf.groupby('distrito').sum()
+psdf = ddf
+fig, ax = plt.subplots(1, figsize=(24,12))
+p=sns.heatmap(psdf.replace(0,np.nan), annot=True, annot_kws={'size':16, 'weight': 'bold'}, 
+              cmap='RdYlGn', fmt='.0f');
+plt.xticks(rotation=45); plt.title('Menciones ambientales por tema y distrito (excluye independientes)', size=24);
+plt.savefig('static/heatmap_distritos.png')
+plt.close()
+#############################
+ldf = xdf.groupby('lista').sum()
+psdf = ldf
+fig, ax = plt.subplots(1, figsize=(24,12))
+p=sns.heatmap(psdf.replace(0,np.nan), annot=True, annot_kws={'size':16, 'weight': 'bold'}, 
+              cmap='RdYlGn', fmt='.0f');
+plt.xticks(rotation=45); plt.title('Menciones ambientales por tema y lista', size=24);
+plt.savefig('static/heatmap_listas.png')
+plt.close()
+#############################
+
+
+
 sdf=xdf.groupby('partido').sum()
 sdf[sdf.columns[1:]].head()
 
