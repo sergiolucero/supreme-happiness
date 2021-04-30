@@ -56,6 +56,7 @@ def get_matches(squery, texto, WIDTH):
             for qf in qfix:
                 bad_mat += [x for x in ftextos if qf in x]
             if len(bad_mat): # must remove, use zip
+                print(squery, bad_mat)
                 fmatches = [f for f in fmatches if op(f) not in bad_mat]
     return fmatches
 

@@ -39,10 +39,11 @@ for conc, mens in kw.items():
         xdf_word = xdf.texto.apply(lambda t: len(get_matches(word, t, 50)))  # no EXCEPTIONS!!
         xconc = [x+y for x,y in zip(xconc, xdf_word.values)]
     xdf[conc] = xconc
+print(xdf[xdf.partido=='UNION DEMOCRATICA INDEPENDIENTE'])
 
 xdf['partido'] = xdf.partido.apply(lambda p: p.split('IND ')[1]+'-IND' if 'IND ' in p else p) # fixer
 xdf['lista'] = xdf.lista.apply(lambda x: x.split('(')[0] if '(' in x else x)
-
+#do
 ddf = xdf.groupby('distrito').sum()
 psdf = ddf.drop('largo', axis=1)
 fig, ax = plt.subplots(1, figsize=(24,12))
