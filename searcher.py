@@ -66,15 +66,18 @@ def querier(query, WIDTH=80, tipo=None):
 
         if len(fmatches):
             ftextos = [op(f) for f in fmatches]
-            fixers = {'medioambiente': ['naturaleza humana', 'propia naturaleza', 'naturaleza positiva'], 
-                      'clima': ['clima político','clima más', 'clima actual', 'clima del país']}
+            fixers = {'medioambiente': ['naturaleza humana', 'propia naturaleza', 'naturaleza positiva',
+					'naturaleza del derecho', 'naturaleza social',
+					'naturaleza colectiva', 'naturaleza política',],
+                      'clima': ['clima político','clima más', 'clima actual', 'clima del país',
+				'clima social', 'clima beligerante', 'clima ambiente']}
             qfix = fixers.get(query,[])
             bad_mat = []
             for qf in qfix:
                 bad_mat += [x for x in ftextos if qf in x]
             if len(bad_mat): # must remove, use zip
                 fmatches = [f for f in fmatches if op(f) not in bad_mat]
-                
+
             nMenciones += len(fmatches)
             ptfile = get_party(tfile)
             #ptfile = 
