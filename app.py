@@ -48,13 +48,13 @@ def candidatos():
 
 @app.route('/distritos')
 def distritos():
-    plots = glob.glob('static/heatmap_listas_DD*.png')
+    plots = sorted(glob.glob('static/heatmap_listas_DD*.png'))
     print('PLOTS:', plots)
     return render_template('distritos.html', plots=plots)
 
 @app.route('/listas')
 def listas():
-    plots = glob.glob('static/heatmap_lista_*.png')
+    plots = sorted(glob.glob('static/heatmap_lista_*.png'))
     print('PLOTS:', plots)
     return render_template('listas.html', plots=plots)
 
