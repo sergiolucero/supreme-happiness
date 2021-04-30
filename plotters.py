@@ -50,14 +50,16 @@ plt.xticks(rotation=45); plt.title('Menciones ambientales por tema y distrito (e
 plt.savefig('static/heatmap_distritos.png')
 plt.close()
 #############################
-ldf = xdf.groupby('lista').sum()
-psdf = ldf.drop('largo', axis=1)
-fig, ax = plt.subplots(1, figsize=(24,12))
-p=sns.heatmap(psdf.replace(0,np.nan), annot=True, annot_kws={'size':16, 'weight': 'bold'}, 
+for dist, dxdf in xdf.groupby('distrito'):
+    dldf = dxdf.groupby('lista').sum()
+    psdf = dldf.drop('largo', axis=1)
+    fig, ax =  plt.subplots(1, figsize=(24,12))
+    p=sns.heatmap(psdf.replace(0,np.nan), annot=True, annot_kws={'size':16, 'weight': 'bold'}, 
               cmap='RdYlGn', fmt='.0f');
-plt.xticks(rotation=45); plt.title('Menciones ambientales por tema y lista', size=24);
-plt.savefig('static/heatmap_listas.png')
-plt.close()
+    plt.xticks(rotation=45)
+    plt.title(f'Menciones ambientales por tema y lista (Distrito {dist})', size=24);
+    plt.savefig(f'static/heatmap_listas_D{dist}.png')
+    plt.close()
 #############################
 
 

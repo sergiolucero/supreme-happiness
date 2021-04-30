@@ -48,7 +48,7 @@ def candidatos():
 
 @app.route('/listas')
 def listas():
-    plots = glob.glob('static/images/lista*.png')
+    plots = glob.glob('static/images/heatmap_listas_DD*.png')
     print('PLOTS:', plots)
     return render_template('listas.html', plots=plots)
 
