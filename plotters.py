@@ -17,7 +17,7 @@ df['candidato'] = [' '.join(fn.split('/')[2].split('_')[1:])[:-4] for fn in file
 
 cdf=sql('SELECT * FROM candidatos')
 xdf=df.merge(cdf, on='candidato').drop(['archivo','distrito_y','programa'],axis=1)
-
+kok
 #kw = pd.read_csv('keywords.txt', names=['palabra'])
 kw = eval(open('keywords_final.txt').read())
 #kw['palabra'] = kw.palabra.apply(lambda p: p.split('\t')[1])
