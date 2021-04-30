@@ -54,7 +54,7 @@ def distritos():
 
 @app.route('/listas')
 def listas():
-    plots = glob.glob('static/heatmap_listas_DD*.png')
+    plots = glob.glob('static/heatmap_lista_*.png')
     print('PLOTS:', plots)
     return render_template('listas.html', plots=plots)
 

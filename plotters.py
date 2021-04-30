@@ -64,6 +64,21 @@ for dist, dxdf in xdf.groupby('distrito'):
     print(dist,end=':')
     plt.close()
 #############################
+for lista, dxdf in xdf.groupby('lista'):
+    dldf = dxdf.groupby('distrito').sum()
+    psdf = dldf.drop('largo', axis=1)
+    fig, ax =  plt.subplots(1, figsize=(24,12))
+    p=sns.heatmap(psdf.replace(0,np.nan), annot=True, 
+                  annot_kws={'size':16, 'weight': 'bold'}, 
+                  cmap='RdYlGn', fmt='.0f');
+    plt.xticks(rotation=45)
+    plt.title(f'Menciones ambientales por tema lista {lista})', size=24);
+    ax.yaxis.set_label_position("right")
+    ax.yaxis.tick_right()
+    clista = lista.replace(' ','_').replace('(','').replace(')','').replace('_/_','_')
+    plt.savefig(f'static/heatmap_lista_{clista}.png')
+    print(dist,end=':')
+    plt.close()
 
 
 
