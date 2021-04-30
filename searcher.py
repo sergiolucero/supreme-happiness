@@ -70,7 +70,7 @@ def querier(query, WIDTH=80, tipo=None):
 					'naturaleza del derecho', 'naturaleza social',
 					'naturaleza colectiva', 'naturaleza política',],
                       'clima': ['clima político','clima más', 'clima actual', 'clima del país',
-				'clima social', 'clima beligerante', 'clima ambiente']}
+				'clima social', 'clima beligerante', 'clima ambiente', 'clima de temor']}
             qfix = fixers.get(query,[])
             bad_mat = []
             for qf in qfix:
@@ -90,8 +90,10 @@ def querier(query, WIDTH=80, tipo=None):
                 matches[ptfile] = mptf
             else:
                 matches[ptfile] = [op(f).replace(squery, MARK %squery)
-                                for f in fmatches]
-
+                                for f in fmatches] 
+    print('B4:', len(matches))
+    matches = {k:v for k,v in matches.items() if len(v)>0}
+    print('AFTA:', len(matches))
     matches =  sorted(matches.items(), key=operator.itemgetter(1))
     #matches.sort('Menciones')
     matches = collections.OrderedDict(matches)
