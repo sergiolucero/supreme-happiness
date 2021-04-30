@@ -8,7 +8,7 @@ import matplotlib.image as mpimg
 from matplotlib.offsetbox import AnnotationBbox, OffsetImage
 
 files = list(glob.glob('TEXTOS/TODOS/*.txt'))
-textos = [open(fn).read() for fn in files]
+textos = [open(fn).read() for fn in files]		# ACTUALIZADO!
 
 df = pd.DataFrame(dict(archivo=files, texto=textos))
 df['distrito'] = [fn.split('/')[2].split('_')[0] for fn in files]
@@ -17,17 +17,26 @@ df['candidato'] = [' '.join(fn.split('/')[2].split('_')[1:])[:-4] for fn in file
 
 cdf=sql('SELECT * FROM candidatos')
 xdf=df.merge(cdf, on='candidato').drop(['archivo','distrito_y','programa'],axis=1)
-kok
+xdf=xdf.rename(columns={'distrito_x':'distrito'})
 #kw = pd.read_csv('keywords.txt', names=['palabra'])
 kw = eval(open('keywords_final.txt').read())
 #kw['palabra'] = kw.palabra.apply(lambda p: p.split('\t')[1])
-WORDS = list(kw.keys())
-for v in kw.values():
-    WORDS += v
-print('WORDS:', WORDS)
+#WORDS = list(kw.keys())
+#for v in kw.values():
+#    WORDS += v
+#print('WORDS:', WORDS)
+#kw = {'concepto': [menciones]}
 
-for word in WORDS:
-    xdf[word] = xdf.texto.apply(lambda t: len(list(re.finditer(word.lower(), t))))
+#for word in WORDS:
+#    xdf[word] = xdf.texto.apply(lambda t: len(list(re.finditer(word.lower(), t))))
+
+kw = {k: [k]+v for k,v in kw.items()}
+for conc, mens in kw.items():
+    xconc = [0]*len(xdf)
+    for word in mens:
+        xdf_word = xdf.texto.apply(lambda t: len(list(re.finditer(word.lower(), t))))
+        xconc = [x+y for x,y in zip(xconc, xdf_word.values)]
+    xdf[conc] = xconc
 
 sdf=xdf.groupby('partido').sum()
 sdf[sdf.columns[1:]].head()
@@ -37,7 +46,8 @@ temas = [k for k,v in sdf.sum().to_dict().items() if v>10 and k!='largo']
 partidos=[k for k,v in sdf.sum(axis=1).to_dict().items() if v>50]
 psdf = sdf[sdf.index.isin(partidos)]
 fig, ax = plt.subplots(1, figsize=(24,12))
-p=sns.heatmap(psdf[temas].replace(0,np.nan), annot=True, annot_kws={'size':16, 'weight': 'bold'}, cmap='RdYlGn', fmt='.0f');
+p=sns.heatmap(psdf[temas].replace(0,np.nan), annot=True, annot_kws={'size':16, 'weight': 'bold'}, 
+              cmap='RdYlGn', fmt='.0f');
 plt.xticks(rotation=45); plt.title('Menciones ambientales por tema y partido (incluye independientes)', size=24);
 plt.savefig('static/heatmap_partidosI.png')
 plt.close()
