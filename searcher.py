@@ -33,6 +33,31 @@ def cubicalo(tipo):     # proyecciones bidimensionales: (i) por distrito/lista/p
 
     return matches
 
+fixers = {'medioambiente': ['naturaleza humana', 'propia naturaleza', 'naturaleza positiva',
+					'naturaleza del derecho', 'naturaleza social',
+					'naturaleza colectiva', 'naturaleza política',],
+          'clima': ['clima político','clima más', 'clima actual', 'clima del país',
+				'clima social', 'clima beligerante', 'clima ambiente', 'clima de temor']}
+
+def get_matches(squery, texto, WIDTH):
+    op = lambda f: (texto[(f.start()-WIDTH):(f.end()+WIDTH)]).replace('\n','')
+
+    if isinstance(squery, list):
+            fmatches = []
+            for sq in squery:
+                fmatches+=list(re.finditer(sq+' ', texto))
+    else:
+            fmatches = list(re.finditer(squery, texto))
+
+    if len(fmatches):
+            ftextos = [op(f) for f in fmatches]
+            qfix = fixers.get(squery,[])
+            bad_mat = []
+            for qf in qfix:
+                bad_mat += [x for x in ftextos if qf in x]
+            if len(bad_mat): # must remove, use zip
+                fmatches = [f for f in fmatches if op(f) not in bad_mat]
+    return fmatches
 
 def querier(query, WIDTH=80, tipo=None):
 
@@ -57,27 +82,23 @@ def querier(query, WIDTH=80, tipo=None):
         tfile = file[13:-4] if tipo is None else file[17:-4]
         op = lambda f: (texto[(f.start()-WIDTH):(f.end()+WIDTH)]).replace('\n','')
 
-        if isinstance(squery, list):
-            fmatches = []
-            for sq in squery:
-                fmatches+=list(re.finditer(sq+' ', texto))
-        else:
-            fmatches = list(re.finditer(squery, texto))
+        #if isinstance(squery, list):
+        #    fmatches = []
+        #    for sq in squery:
+        #        fmatches+=list(re.finditer(sq+' ', texto))
+        #else:
+        #    fmatches = list(re.finditer(squery, texto))
 
+        #if len(fmatches):
+        #    ftextos = [op(f) for f in fmatches]
+        #    qfix = fixers.get(query,[])
+        #    bad_mat = []
+        #    for qf in qfix:
+        #        bad_mat += [x for x in ftextos if qf in x]
+        #    if len(bad_mat): # must remove, use zip
+        #        fmatches = [f for f in fmatches if op(f) not in bad_mat]
+        fmatches = get_matches(texto)
         if len(fmatches):
-            ftextos = [op(f) for f in fmatches]
-            fixers = {'medioambiente': ['naturaleza humana', 'propia naturaleza', 'naturaleza positiva',
-					'naturaleza del derecho', 'naturaleza social',
-					'naturaleza colectiva', 'naturaleza política',],
-                      'clima': ['clima político','clima más', 'clima actual', 'clima del país',
-				'clima social', 'clima beligerante', 'clima ambiente', 'clima de temor']}
-            qfix = fixers.get(query,[])
-            bad_mat = []
-            for qf in qfix:
-                bad_mat += [x for x in ftextos if qf in x]
-            if len(bad_mat): # must remove, use zip
-                fmatches = [f for f in fmatches if op(f) not in bad_mat]
-
             nMenciones += len(fmatches)
             ptfile = get_party(tfile)
             #ptfile = 

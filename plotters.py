@@ -1,8 +1,9 @@
 import glob, pandas as pd, numpy as np
 import re
 from util import *
-import seaborn as sns
+from searcher import *
 
+import seaborn as sns
 import matplotlib.pyplot as plt
 import matplotlib.image as mpimg
 from matplotlib.offsetbox import AnnotationBbox, OffsetImage
@@ -34,7 +35,8 @@ kw = {k: [k]+v for k,v in kw.items()}
 for conc, mens in kw.items():
     xconc = [0]*len(xdf)
     for word in mens:
-        xdf_word = xdf.texto.apply(lambda t: len(list(re.finditer(word.lower(), t))))
+        #xdf_word = xdf.texto.apply(lambda t: len(list(re.finditer(word.lower(), t))))
+        xdf_word = xdf.texto.apply(lambda t: len(get_matches(word, t, 50)))  # no EXCEPTIONS!!
         xconc = [x+y for x,y in zip(xconc, xdf_word.values)]
     xdf[conc] = xconc
 
@@ -54,9 +56,11 @@ for dist, dxdf in xdf.groupby('distrito'):
     dldf = dxdf.groupby('lista').sum()
     psdf = dldf.drop('largo', axis=1)
     fig, ax =  plt.subplots(1, figsize=(24,12))
-    p=sns.heatmap(psdf.replace(0,np.nan), annot=True, annot_kws={'size':16, 'weight': 'bold'}, 
+    p=sns.heatmap(psdf.replace(0,np.nan), annot=True, 
+                annot_kws={'size':20, 'weight': 'bold'}, 
               cmap='RdYlGn', fmt='.0f');
     plt.xticks(rotation=45)
+    plt.margins(x=0.1)
     plt.title(f'Menciones ambientales por tema y lista (Distrito {dist})', size=24);
     ax.yaxis.set_label_position("right")
     ax.yaxis.tick_right()
@@ -69,9 +73,10 @@ for lista, dxdf in xdf.groupby('lista'):
     psdf = dldf.drop('largo', axis=1)
     fig, ax =  plt.subplots(1, figsize=(24,12))
     p=sns.heatmap(psdf.replace(0,np.nan), annot=True, 
-                  annot_kws={'size':16, 'weight': 'bold'}, 
+                  annot_kws={'size':20, 'weight': 'bold'}, 
                   cmap='RdYlGn', fmt='.0f');
     plt.xticks(rotation=45)
+    plt.margins(x=0.1)
     plt.title(f'Menciones ambientales por tema lista {lista})', size=24);
     ax.yaxis.set_label_position("right")
     ax.yaxis.tick_right()
@@ -114,6 +119,7 @@ fig,ax = plt.subplots(1, figsize=(24,12))
 sns.barplot(x='total_menciones', data=ts.sort_values('total_menciones'), y='partido', palette='RdYlGn');
 for xx in range(200,1000,200):
     plt.axvline(x=xx, color='blue')
+plt.margins(x=0.1)
 
 arr_lena = mpimg.imread('greenpeace.png')
 imagebox = OffsetImage(arr_lena, zoom=1.0)
