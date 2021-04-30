@@ -46,6 +46,12 @@ def candidatos():
 
     return render_template('candidatos.html', cdata=cdata)
 
+@app.route('/distritos')
+def distritos():
+    plots = glob.glob('static/images/heatmap_listas_DD*.png')
+    print('PLOTS:', plots)
+    return render_template('distritos.html', plots=plots)
+
 @app.route('/listas')
 def listas():
     plots = glob.glob('static/images/heatmap_listas_DD*.png')
