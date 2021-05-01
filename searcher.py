@@ -103,7 +103,7 @@ def querier(query, WIDTH=80, tipo=None):
         #        bad_mat += [x for x in ftextos if qf in x]
         #    if len(bad_mat): # must remove, use zip
         #        fmatches = [f for f in fmatches if op(f) not in bad_mat]
-        fmatches = get_matches(texto)
+        fmatches = get_matches(query, texto, WIDTH)
 
         if len(fmatches):
             nMenciones += len(fmatches)
