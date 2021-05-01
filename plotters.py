@@ -113,8 +113,9 @@ plt.close()
 fig, ax = plt.subplots(1, figsize=(24,12))
 pidf = psdf[psdf.index!='INDEPENDIENTES']
 pidf.to_csv('resument_partidos_sin_ind.pdf',index=False)
+pidf.index = [p.replace('PARTIDO ','P.').replace('REGIONALISTA ','REG.') for p in pidf.index]
 
-p = sns.heatmap(psdf[psdf.index!='INDEPENDIENTES'][temas].replace(0, np.nan), 
+p = sns.heatmap(psdf[psdf.index!='INDEPENDIENTES'][temas].replace(0, np.nan),                   # PLOT1: por partido
               annot=True, annot_kws={'size':16, 'weight': 'bold'}, cmap='RdYlGn', fmt='.0f');
 plt.xticks(rotation=45); plt.title('Menciones ambientales por tema y partido (excluye independientes)', size=24);
 plt.savefig('static/heatmap_partidos.png')
