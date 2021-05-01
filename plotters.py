@@ -74,7 +74,9 @@ for dist, dxdf in xdf.groupby('distrito'):
     p=sns.heatmap(psdf.replace(0,np.nan), annot=True, 
                 annot_kws={'size':20, 'weight': 'bold'}, 
               cmap='RdYlGn', fmt='.0f', cbar=False);
-    plt.xticks(rotation=45)
+    #plt.xticks(rotation=45)
+    plt.xticks(fontsize=18)  # agua, clima, medio
+    plt.yticks(rotation=0)
     plt.margins(x=0.1)
     plt.title(f'Menciones ambientales por tema y lista (Distrito {dist2})', size=24);
     ax.yaxis.set_label_position("right")
@@ -85,19 +87,20 @@ for dist, dxdf in xdf.groupby('distrito'):
 print('PLOTTED: distritos')
 #############################
 for lista, dxdf in xdf.groupby('lista'):
+    clista = lista.replace(' ','_').replace('(','').replace(')','').replace('_/_','_')
     dldf = dxdf.groupby('distrito').sum()
     psdf = dldf.drop('largo', axis=1)
     fig, ax =  plt.subplots(1, figsize=(24,12))
     p = sns.heatmap(psdf.replace(0,np.nan), annot=True, 
                   annot_kws={'size':20, 'weight': 'bold'}, 
                   cmap='RdYlGn', fmt='.0f', cbar=False);
-    plt.xticks(rotation=45)
-    plt.yticks(rotation=90)
+    #plt.xticks(rotation=45)
+    plt.xticks(fontsize=18)  # agua, clima, medio
+    plt.yticks(rotation=0)
     plt.margins(x=0.1)
-    plt.title(f'Menciones ambientales por tema lista {lista})', size=24);
+    plt.title(f'Menciones ambientales por tema lista {clista})', size=24);
     ax.yaxis.set_label_position("right")
     ax.yaxis.tick_right()
-    clista = lista.replace(' ','_').replace('(','').replace(')','').replace('_/_','_')
     plt.savefig(f'static/heatmap_lista_{clista}.png')
     print(dist,end=':')
     plt.close()
