@@ -46,6 +46,8 @@ xdf['partido'] = xdf.partido.apply(lambda p: p.split('IND ')[1]+'-IND' if 'IND '
 xdf['lista'] = xdf.lista.apply(lambda x: x.split('(')[0] if '(' in x else x)
 #do
 print('B4:', len(xdf))
+udi = xdf[xdf.partido=='UNION DEMOCRATA INDEPENDIENTE']
+udi.to_html('static/udi.html', index=False)
 xdf = xdf[xdf.partido!='UNION DEMOCRATA INDEPENDIENTE']
 print('Afta:', len(xdf))
 #sexi    
@@ -112,9 +114,9 @@ plt.close()
 fig, ax = plt.subplots(1, figsize=(24,12))
 pidf = psdf[psdf.index!='INDEPENDIENTES']
 pidf.to_csv('resument_partidos_sin_ind.pdf',index=False)
-print('B4:', pidf.index)
+#print('B4:', pidf.index)
 pidf.index = [p.replace('PARTIDO ','P.').replace('REGIONALISTA ','REG.') for p in pidf.index]
-print('A5:', pidf.index)
+#print('A5:', pidf.index)
 #don
 p = sns.heatmap(psdf[psdf.index!='INDEPENDIENTES'][temas].replace(0, np.nan),                   # PLOT1: por partido
               annot=True, annot_kws={'size':16, 'weight': 'bold'}, cmap='RdYlGn', fmt='.0f');
