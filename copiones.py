@@ -23,10 +23,10 @@ for k,v in longdicks.items():
     vdf = vdf[['candidato','distrito','partido','lista']]
     partidos = vdf.partido.value_counts()
     listas = vdf.lista.value_counts()
-    lens[ix] = (n,partidos.to_dict(),listas,vdf)
+    lens[ix] = (n, partidos.to_dict(), listas, vdf)
     print(k,len(clist))
 
-lens =  sorted(lens.items(), key=lambda x:x[0], reverse=True)
+lens =  sorted(lens.items(), key=lambda x: x[1][0], reverse=True)
 lens = OrderedDict(lens)
 
 fw=open('static/copiones.html','w')
