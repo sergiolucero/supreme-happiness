@@ -55,6 +55,8 @@ xdf = xdf[xdf.partido!='UNION DEMOCRATA INDEPENDIENTE']
 xdf = xdf.append(udi2)
 print('Afta:', len(xdf))
 #sexi    
+#xdf.to_csv('static/xdata.csv.zip', compression='zip', index=False)
+#wow
 
 ddf = xdf.groupby('distrito').sum()
 psdf = ddf.drop('largo', axis=1)
