@@ -48,7 +48,11 @@ xdf['lista'] = xdf.lista.apply(lambda x: x.split('(')[0] if '(' in x else x)
 print('B4:', len(xdf))
 udi = xdf[xdf.partido=='UNION DEMOCRATA INDEPENDIENTE']
 udi.to_html('static/udi.html', index=False)
+udi2 = udi[udi.candidato=='DIEGO RIVEAUX MARCET']
+udi2.iloc[0]['medioambiente']=2
+print('LENU:', len(udi2))
 xdf = xdf[xdf.partido!='UNION DEMOCRATA INDEPENDIENTE']
+xdf = xdf.append(udi2)
 print('Afta:', len(xdf))
 #sexi    
 
