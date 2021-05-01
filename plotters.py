@@ -62,9 +62,11 @@ ddf = xdf.groupby('distrito').sum()
 psdf = ddf.drop('largo', axis=1)
 
 fig, ax = plt.subplots(1, figsize=(24,12))
-p=sns.heatmap(psdf.replace(0,np.nan), annot=True, annot_kws={'size':16, 'weight': 'bold'}, 
-              cmap='RdYlGn', fmt='.0f');
-plt.xticks(rotation=45)
+p = sns.heatmap(psdf.replace(0,np.nan), annot=True, annot_kws={'size':16, 'weight': 'bold'}, 
+              cmap='RdYlGn', fmt='.0f', cbar=False);
+#plt.xticks(rotation=45)
+plt.xticks(fontsize=18)  # agua, clima, medio
+
 plt.title('Menciones ambientales por tema y distrito (excluye independientes)', size=24);
 plt.savefig('static/heatmap_distritos.png')
 plt.close()
@@ -121,7 +123,8 @@ psdf = sdf[sdf.index.isin(partidos)]
 fig, ax = plt.subplots(1, figsize=(24,12))
 p=sns.heatmap(psdf[temas].replace(0,np.nan), annot=True, annot_kws={'size':16, 'weight': 'bold'}, 
               cmap='RdYlGn', fmt='.0f');
-plt.xticks(rotation=45); plt.title('Menciones ambientales por tema y partido (incluye independientes)', size=24);
+plt.xticks(rotation=45)
+plt.title('Menciones ambientales por tema y partido (incluye independientes)', size=24);
 plt.savefig('static/heatmap_partidosI.png')
 plt.close()
 
