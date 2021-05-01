@@ -64,7 +64,8 @@ psdf = ddf.drop('largo', axis=1)
 fig, ax = plt.subplots(1, figsize=(24,12))
 p=sns.heatmap(psdf.replace(0,np.nan), annot=True, annot_kws={'size':16, 'weight': 'bold'}, 
               cmap='RdYlGn', fmt='.0f');
-plt.xticks(rotation=45); plt.title('Menciones ambientales por tema y distrito (excluye independientes)', size=24);
+plt.xticks(rotation=45)
+plt.title('Menciones ambientales por tema y distrito (excluye independientes)', size=24);
 plt.savefig('static/heatmap_distritos.png')
 plt.close()
 #############################
@@ -76,7 +77,7 @@ for dist, dxdf in xdf.groupby('distrito'):
     p=sns.heatmap(psdf.replace(0,np.nan), annot=True, 
                 annot_kws={'size':20, 'weight': 'bold'}, 
               cmap='RdYlGn', fmt='.0f', cbar=False);
-    plt.yticks(rotation=90)  # does it work?
+    plt.yticks(rotation=0)  # does it work?
     plt.xticks(fontsize=18)  # agua, clima, medio
     plt.margins(x=0.1)
     plt.title(f'Menciones ambientales por tema y lista (Distrito {dist2})', size=24);
@@ -97,7 +98,7 @@ for lista, dxdf in xdf.groupby('lista'):
                   cmap='RdYlGn', fmt='.0f', cbar=False);
     #plt.xticks(rotation=45)
     plt.xticks(fontsize=18)  # agua, clima, medio
-    plt.yticks(rotation=90)  # does it work?
+    plt.yticks(rotation=0)  # does it work? 90 don't
     #plt.yticks(rotation=0)
     plt.margins(x=0.1)
     plt.title(f'Menciones ambientales por tema lista {clista})', size=24);
