@@ -67,29 +67,32 @@ plt.savefig('static/heatmap_distritos.png')
 plt.close()
 #############################
 for dist, dxdf in xdf.groupby('distrito'):
+    dist2 = 'D%02d' %(int(dist[1:]))
     dldf = dxdf.groupby('lista').sum()
     psdf = dldf.drop('largo', axis=1)
     fig, ax =  plt.subplots(1, figsize=(24,12))
     p=sns.heatmap(psdf.replace(0,np.nan), annot=True, 
                 annot_kws={'size':20, 'weight': 'bold'}, 
-              cmap='RdYlGn', fmt='.0f');
+              cmap='RdYlGn', fmt='.0f', cbar=False);
     plt.xticks(rotation=45)
     plt.margins(x=0.1)
-    plt.title(f'Menciones ambientales por tema y lista (Distrito {dist})', size=24);
+    plt.title(f'Menciones ambientales por tema y lista (Distrito {dist2})', size=24);
     ax.yaxis.set_label_position("right")
     ax.yaxis.tick_right()
-    plt.savefig(f'static/heatmap_listas_D{dist}.png')
-    print(dist,end=':')
+    plt.savefig(f'static/heatmap_listas_D{dist2}.png')
+    #print(dist,end=':')
     plt.close()
+print('PLOTTED: distritos')
 #############################
 for lista, dxdf in xdf.groupby('lista'):
     dldf = dxdf.groupby('distrito').sum()
     psdf = dldf.drop('largo', axis=1)
     fig, ax =  plt.subplots(1, figsize=(24,12))
-    p=sns.heatmap(psdf.replace(0,np.nan), annot=True, 
+    p = sns.heatmap(psdf.replace(0,np.nan), annot=True, 
                   annot_kws={'size':20, 'weight': 'bold'}, 
-                  cmap='RdYlGn', fmt='.0f');
+                  cmap='RdYlGn', fmt='.0f', cbar=False);
     plt.xticks(rotation=45)
+    plt.yticks(rotation=90)
     plt.margins(x=0.1)
     plt.title(f'Menciones ambientales por tema lista {lista})', size=24);
     ax.yaxis.set_label_position("right")
@@ -98,7 +101,8 @@ for lista, dxdf in xdf.groupby('lista'):
     plt.savefig(f'static/heatmap_lista_{clista}.png')
     print(dist,end=':')
     plt.close()
-
+print('PLOTTED: listas')
+#################################
 
 sdf=xdf.groupby('partido').sum()
 sdf[sdf.columns[1:]].head()
