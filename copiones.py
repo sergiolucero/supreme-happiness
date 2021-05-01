@@ -12,7 +12,7 @@ longdicks={len(k): v for k,v in clus.items() if len(v)>1}
 
 df=pd.read_csv('candidatos.csv')
 
-ix=0;lens = {}
+ix=0;lens = {}; nCopias=0
 for k,v in longdicks.items():
     ix+=1; n=len(v); # nOffenders
     vfiles=[files[ix] for ix in v]
@@ -25,6 +25,9 @@ for k,v in longdicks.items():
     listas = vdf.lista.value_counts()
     lens[ix] = (n, partidos.to_dict(), listas, vdf)
     print(k,len(clist))
+    nCopias += n
+
+print('RESUMEN:', nCopias, 'out of', len(textos), 'Porc:', 100*nCopias/len(textos))
 
 lens =  sorted(lens.items(), key=lambda x: x[1][0], reverse=True)
 lens = OrderedDict(lens)
