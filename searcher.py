@@ -52,15 +52,15 @@ def get_matches(squery, texto, WIDTH):
 
     if len(fmatches):
             ftextos = [op(f) for f in fmatches]
-            print('FT:', ftextos)
+            #print('FT:', ftextos)
             qfix = fixers.get(squery,[])
             bad_mat = []
             for qf in qfix:
                 bad_mat += [x for x in ftextos if qf in x]
             if len(bad_mat): # must remove, use zip
-                print(squery, bad_mat)
+                #print(squery, bad_mat)
                 fmatches = [f for f in fmatches if op(f) not in bad_mat]
-                print('FMAT2:', fmatches)
+                #print('FMAT2:', fmatches)
                 #somebad
 
     return fmatches
