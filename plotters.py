@@ -79,12 +79,12 @@ for dist, dxdf in xdf.groupby('distrito'):
     p=sns.heatmap(psdf.replace(0,np.nan), annot=True, 
                 annot_kws={'size':20, 'weight': 'bold'}, 
               cmap='RdYlGn', fmt='.0f', cbar=False);
-    plt.yticks(rotation=90)  # does it work?
     plt.xticks(fontsize=18)  # agua, clima, medio
     plt.margins(x=0.1)
     plt.title(f'Menciones ambientales por tema y lista (Distrito {dist2})', size=24);
     ax.yaxis.set_label_position("right")
     ax.yaxis.tick_right()   # all this works!
+    plt.yticks(rotation=90)  # does it work?
     plt.savefig(f'static/heatmap_listas_D{dist2}.png')
     #print(dist,end=':')
     plt.close()
@@ -100,12 +100,12 @@ for lista, dxdf in xdf.groupby('lista'):
                   cmap='RdYlGn', fmt='.0f', cbar=False);
     #plt.xticks(rotation=45)
     plt.xticks(fontsize=18)  # agua, clima, medio
-    plt.yticks(rotation=0)  # does it work? 90 don't
     #plt.yticks(rotation=0)
     plt.margins(x=0.1)
     plt.title(f'Menciones ambientales por tema lista {clista})', size=24);
     ax.yaxis.set_label_position("right")
     ax.yaxis.tick_right()
+    plt.yticks(rotation=0)  # does it work? 90 don't
     plt.savefig(f'static/heatmap_lista_{clista}.png')
     print(dist,end=':')
     plt.close()
