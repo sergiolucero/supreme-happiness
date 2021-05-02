@@ -87,6 +87,7 @@ for dist, dxdf in xdf.groupby('distrito'):
     dldf = dxdf.groupby('lista').sum()
     psdf = dldf.drop('largo', axis=1)
     fig, ax =  plt.subplots(1, figsize=(14,8))
+    fig.subplots_adjust(right=0.8)
     p=sns.heatmap(psdf.replace(0,np.nan), annot=True, 
                 annot_kws={'size':20, 'weight': 'bold'}, 
               cmap='RdYlGn', fmt='.0f', cbar=False);
