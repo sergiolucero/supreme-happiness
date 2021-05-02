@@ -79,7 +79,7 @@ for dist, dxdf in xdf.groupby('distrito'):
     p=sns.heatmap(psdf.replace(0,np.nan), annot=True, 
                 annot_kws={'size':20, 'weight': 'bold'}, 
               cmap='RdYlGn', fmt='.0f', cbar=False);
-    plt.yticks(rotation=0)  # does it work?
+    plt.yticks(rotation=90)  # does it work?
     plt.xticks(fontsize=18)  # agua, clima, medio
     plt.margins(x=0.1)
     plt.title(f'Menciones ambientales por tema y lista (Distrito {dist2})', size=24);

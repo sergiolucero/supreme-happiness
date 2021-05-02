@@ -4,6 +4,7 @@ import operator
 import collections
 
 sql = lambda q: pd.read_sql(q, sqlite3.connect('greenpeace.db'))
+keywords = eval(open('keywords_final.txt').read())
 #####################################
 def read_text(fn):
     rfn = open(fn).read()
@@ -43,7 +44,7 @@ fixers = {'medioambiente': ['naturaleza humana', 'propia naturaleza', 'naturalez
           'clima': ['clima político','clima más', 'clima actual', 'clima del país',
 				'clima social', 'clima beligerante', 'clima ambiente', 'clima de temor']}
 
-def get_matches(squery, texto, WIDTH):
+def get_matches(squery, texto, WIDTH):      # CONTAINS EXCLUSIONS
 
     op = lambda f: (texto[(f.start()-WIDTH):(f.end()+WIDTH)]).replace('\n','')
 
