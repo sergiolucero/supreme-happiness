@@ -71,11 +71,22 @@ plt.title('Menciones ambientales por tema y distrito (excluye independientes)', 
 plt.savefig('static/heatmap_distritos.png')
 plt.close()
 #############################
+def fix_list(lis):
+    slis = lis.split()
+    if len(slis)>3:
+        flis = (' '.join(slis[:3]))+chr(10)+(' '.join(slis[3:]))
+    else:
+        flis = lis
+    print(lis, flis)
+    return flis
+
 for dist, dxdf in xdf.groupby('distrito'):
     dist2 = 'D%02d' %(int(dist[1:]))
+    dxdf['lista']= dxdf.lista.apply(fix_list)
+
     dldf = dxdf.groupby('lista').sum()
     psdf = dldf.drop('largo', axis=1)
-    fig, ax =  plt.subplots(1, figsize=(24,12))
+    fig, ax =  plt.subplots(1, figsize=(28,12))
     p=sns.heatmap(psdf.replace(0,np.nan), annot=True, 
                 annot_kws={'size':20, 'weight': 'bold'}, 
               cmap='RdYlGn', fmt='.0f', cbar=False);
