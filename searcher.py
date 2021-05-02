@@ -11,6 +11,10 @@ def read_text(fn):
         rfn = rfn.replace(rep[0],rep[1])
     return rfn
 
+def clean_read(fn):
+    return read_text(fn)
+
+
 def get_party(c):
     sc = ' '.join(c.split('_')[1:])
     try:
