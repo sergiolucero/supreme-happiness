@@ -64,6 +64,7 @@ psdf = ddf.drop('largo', axis=1)
 fig, ax = plt.subplots(1, figsize=(24,12))
 p = sns.heatmap(psdf.replace(0,np.nan), annot=True, annot_kws={'size':16, 'weight': 'bold'}, 
               cmap='RdYlGn', fmt='.0f', cbar=False);
+fig.subplots_adjust(left=0.3)
 #plt.xticks(rotation=45)
 plt.xticks(fontsize=18)  # agua, clima, medio
 
