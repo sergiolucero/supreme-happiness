@@ -77,7 +77,7 @@ def fix_list(lis):
         flis = (' '.join(slis[:3]))+chr(10)+(' '.join(slis[3:]))
     else:
         flis = lis
-    print(lis, flis)
+    #print(lis, flis)
     return flis
 
 for dist, dxdf in xdf.groupby('distrito'):
@@ -86,7 +86,7 @@ for dist, dxdf in xdf.groupby('distrito'):
 
     dldf = dxdf.groupby('lista').sum()
     psdf = dldf.drop('largo', axis=1)
-    fig, ax =  plt.subplots(1, figsize=(16,8))
+    fig, ax =  plt.subplots(1, figsize=(14,8))
     p=sns.heatmap(psdf.replace(0,np.nan), annot=True, 
                 annot_kws={'size':20, 'weight': 'bold'}, 
               cmap='RdYlGn', fmt='.0f', cbar=False);
