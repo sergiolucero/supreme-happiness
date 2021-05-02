@@ -131,6 +131,8 @@ def querier(query, WIDTH=80, tipo=None):
 matches = lambda wt: len(list(re.finditer(wt[0].lower(), wt[1])))
 fmatches = lambda wt: list(re.finditer(wt[0].lower(), wt[1]))
 
+# PROBLEMA: 
+
 def finders(textos, concepto, menciones):
 
     # agua: [derecho al agua, etcagua, 3crisis hídrica...]

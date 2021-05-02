@@ -59,15 +59,18 @@ def listas():
     return render_template('listas.html', plots=plots)
 
 @app.route('/menciones', methods=['GET','POST'])
-def hello_world():
+def menciones():
     #men = pd.read_csv('keywords.txt', names=['Tema'])
     #men['Tema']=men.Tema.apply(lambda t: t.split('\t')[1])
     men = sql('SELECT * FROM menciones_todos ORDER BY nMenciones DESC')
-    menO = sql('SELECT * FROM menciones_ori ORDER BY nMenciones DESC')
-
+    #menO = sql('SELECT * FROM menciones_ori ORDER BY nMenciones DESC')
+    menO = sql('SELECT * FROM menciones_originarios ORDER BY nMenciones DESC')
+    #wot
     #men['Tema'] = men.Tema.apply(lambda t: 'clima' if 'clim' in t else 'medioambiente' if 'medio' in t else t)
     men = men.groupby('concepto').sum().reset_index()
     menO = menO.groupby('concepto').sum().reset_index()
+    men['PorcMencionan'] = men.PorcMencionan.apply(lambda x: round(x,1))
+    menO['PorcMencionan'] = menO.PorcMencionan.apply(lambda x: round(x,1))
     #URL = 'http://greenpeace.quant.cl:8081/ver_menciones/%s/50' 
     URL = 'http://greenpeace-monitor.herokuapp.com/ver_menciones/%s/50' 
     URLO = 'http://greenpeace-monitor.herokuapp.com/ver_menciones_ori/%s/50' 
@@ -80,17 +83,6 @@ def hello_world():
     dataO = menO.to_html(index=False, escape=False, classes='mystyle')
 
     return render_template('menciones_all.html', data=data,dataO=dataO)
-
-@app.route('/originarios', methods=['GET','POST'])
-def hello_otis():
-    #men = pd.read_csv('keywords.txt', names=['Tema'])
-    #men['Tema']=men.Tema.apply(lambda t: t.split('\t')[1])
-    men = sql('SELECT * FROM menciones_ori ORDER BY nMenciones DESC')
-    men['link'] = ['<A HREF="%s">click</A>' %link for link in men['link']]
-
-    data = men.to_html(index=False, escape=False, classes='mystyle')
-
-    return render_template('menciones.html', data=data)
 
 if __name__ == '__main__':
     app.run(port=8081, debug=True, host='0.0.0.0')
