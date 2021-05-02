@@ -86,12 +86,12 @@ for dist, dxdf in xdf.groupby('distrito'):
 
     dldf = dxdf.groupby('lista').sum()
     psdf = dldf.drop('largo', axis=1)
-    fig, ax =  plt.subplots(1, figsize=(16,12))
+    fig, ax =  plt.subplots(1, figsize=(16,8))
     p=sns.heatmap(psdf.replace(0,np.nan), annot=True, 
                 annot_kws={'size':20, 'weight': 'bold'}, 
               cmap='RdYlGn', fmt='.0f', cbar=False);
     plt.xticks(fontsize=18)  # agua, clima, medio
-    plt.yticks(fontsize=16)  # agua, clima, medio
+    plt.yticks(fontsize=14)  # agua, clima, medio
     #plt.margins(x=0.1)
     plt.title(f'Menciones ambientales por tema y lista (Distrito {dist2})', size=24);
     ax.yaxis.set_label_position("right")
