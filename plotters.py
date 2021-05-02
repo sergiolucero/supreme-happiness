@@ -84,8 +84,9 @@ for dist, dxdf in xdf.groupby('distrito'):
     plt.title(f'Menciones ambientales por tema y lista (Distrito {dist2})', size=24);
     ax.yaxis.set_label_position("right")
     ax.yaxis.tick_right()   # all this works!
-    for tick in ax.get_yticklabels():
-        tick(rotation=45)  # does it work?
+    plt.yticks(rotation=0)
+    #for tick in ax.get_yticklabels():
+    #    tick(rotation=45)  # does it work?
     plt.savefig(f'static/heatmap_listas_D{dist2}.png')
     #print(dist,end=':')
     plt.close()
