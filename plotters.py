@@ -57,8 +57,9 @@ print('Afta:', len(xdf))
 #sexi    
 #xdf.to_csv('static/xdata.csv.zip', compression='zip', index=False)
 #wow
-
-ddf = xdf.groupby('distrito').sum()
+xxdf = xdf.copy()       # collapse INDEPENDIENTES
+xxdf['partido'] = xxdf.partido.apply(lambda p: p.split('IND ')[1] if 'IND ' in p else p) # fixer
+ddf = xxdf.groupby('distrito').sum()
 psdf = ddf.drop('largo', axis=1)
 
 fig, ax = plt.subplots(1, figsize=(24,12))
