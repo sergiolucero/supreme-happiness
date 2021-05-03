@@ -13,6 +13,7 @@ textos = [open(fn).read() for fn in files]		# ACTUALIZADO!
 
 df = pd.DataFrame(dict(archivo=files, texto=textos))
 df['distrito'] = [fn.split('/')[2].split('_')[0] for fn in files]
+df['distrito'] = ['D%02d' %(int(dist[1:])) for dist in df.distrito]
 df['largo'] = df.texto.apply(len)
 df['candidato'] = [' '.join(fn.split('/')[2].split('_')[1:])[:-4] for fn in files]
 
@@ -68,6 +69,9 @@ psdf = ddf.drop('largo', axis=1)
 fig, ax = plt.subplots(1, figsize=(24,12))
 p = sns.heatmap(psdf.replace(0,np.nan), annot=True, annot_kws={'size':16, 'weight': 'bold'}, 
               cmap='RdYlGn', fmt='.0f', cbar=False);
+#print('PSDF');print(psdf)
+plt.xticks(rotation=0)
+plt.xticks(fontsize=18)  # agua, clima, medio
 fig.subplots_adjust(left=0.3)
 #plt.xticks(rotation=45)
 plt.xticks(fontsize=18)  # agua, clima, medio
@@ -86,7 +90,6 @@ def fix_list(lis):
     return flis
 
 for dist, dxdf in xdf.groupby('distrito'):
-    dist2 = 'D%02d' %(int(dist[1:]))
     dxdf['lista']= dxdf.lista.apply(fix_list)
 
     dldf = dxdf.groupby('lista').sum()
@@ -99,13 +102,13 @@ for dist, dxdf in xdf.groupby('distrito'):
     plt.xticks(fontsize=18)  # agua, clima, medio
     plt.yticks(fontsize=14)  # agua, clima, medio
     #plt.margins(x=0.1)
-    plt.title(f'Menciones ambientales por tema y lista (Distrito {dist2})', size=24);
+    plt.title(f'Menciones ambientales por tema y lista (Distrito {dist})', size=24);
     ax.yaxis.set_label_position("right")
     ax.yaxis.tick_right()   # all this works!
     plt.yticks(rotation=0)
     #for tick in ax.get_yticklabels():
     #    tick(rotation=45)  # does it work?
-    plt.savefig(f'static/heatmap_listas_D{dist2}.png')
+    plt.savefig(f'static/heatmap_listas_D{dist}.png')
     #print(dist,end=':')
     plt.close()
 print('PLOTTED: distritos')
@@ -114,6 +117,7 @@ for lista, dxdf in xdf.groupby('lista'):
     clista = lista.replace(' ','_').replace('(','').replace(')','').replace('_/_','_')
     dldf = dxdf.groupby('distrito').sum()
     psdf = dldf.drop('largo', axis=1)
+
     fig, ax =  plt.subplots(1, figsize=(24,12))
     p = sns.heatmap(psdf.replace(0,np.nan), annot=True, 
                   annot_kws={'size':20, 'weight': 'bold'}, 
@@ -131,8 +135,9 @@ for lista, dxdf in xdf.groupby('lista'):
     plt.close()
 print('PLOTTED: listas')
 #################################
-
-sdf=xdf.groupby('partido').sum()
+pxdf = xdf.copy()
+pxdf['partido'] = pxdf['partido'].apply(lambda p: p[:-4] if p[-4:]=='-IND' else p)   # IND RN -> RN
+sdf = pxdf.groupby('partido').sum()
 sdf[sdf.columns[1:]].head()
 
 temas = [k for k,v in sdf.sum().to_dict().items() if v>10 and k!='largo']
@@ -147,16 +152,19 @@ plt.xticks(rotation=45)
 plt.title('Menciones ambientales por tema y partido (incluye independientes)', size=24);
 plt.savefig('static/heatmap_partidosI.png')
 plt.close()
-
+############################################### PLOT_PARTIDOS SIN_INDIES
 fig, ax = plt.subplots(1, figsize=(24,12))
+iidf = psdf[psdf.index=='INDEPENDIENTES']
 pidf = psdf[psdf.index!='INDEPENDIENTES']
 pidf.to_csv('resument_partidos_sin_ind.pdf',index=False)
 #print('B4:', pidf.index)
 pidf.index = [p.replace('PARTIDO ','P.').replace('REGIONALISTA ','REG.') for p in pidf.index]
 #print('A5:', pidf.index)
 #don
-p = sns.heatmap(psdf[psdf.index!='INDEPENDIENTES'][temas].replace(0, np.nan),                   # PLOT1: por partido
-              annot=True, annot_kws={'size':16, 'weight': 'bold'}, cmap='RdYlGn', fmt='.0f');
+#p = sns.heatmap(psdf[psdf.index!='INDEPENDIENTES'][temas].replace(0, np.nan),                   # PLOT1: por partido
+p = sns.heatmap(pidf[temas].replace(0, np.nan),                   # PLOT1: por partido
+              annot=True, annot_kws={'size':16, 'weight': 'bold'}, 
+                cmap='RdYlGn', fmt='.0f');
 plt.xticks(rotation=45); plt.title('Menciones ambientales por tema y partido (excluye independientes)', size=24);
 plt.savefig('static/heatmap_partidos.png')
 plt.close()
