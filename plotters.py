@@ -58,7 +58,10 @@ print('Afta:', len(xdf))
 #xdf.to_csv('static/xdata.csv.zip', compression='zip', index=False)
 #wow
 xxdf = xdf.copy()       # collapse INDEPENDIENTES
-xxdf['partido'] = xxdf.partido.apply(lambda p: p.split('IND ')[1] if 'IND ' in p else p) # fixer
+print(xxdf.head(10)['partido'])
+xxdf['partido'] = xxdf.partido.apply(lambda p: p.replace('-IND','')) # fixer
+print(xxdf.head(10)['partido'])
+#dos
 ddf = xxdf.groupby('distrito').sum()
 psdf = ddf.drop('largo', axis=1)
 
