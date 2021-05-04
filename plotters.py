@@ -150,6 +150,8 @@ sns.barplot(x='total_menciones', data=ts.sort_values('total_menciones'),
             y='lista', palette='RdYlGn')
 for xx in (1000,2000):    
     plt.axvline(x=xx, color='blue')
+ax.yaxis.set_label_position("right")
+ax.yaxis.tick_right()   # all this works!
 plt.margins(x=0.4)
 
 plt.title('Menciones ambientales por tema y lista', size=24)
