@@ -59,9 +59,9 @@ print('Afta:', len(xdf))
 #xdf.to_csv('static/xdata.csv.zip', compression='zip', index=False)
 #wow
 xxdf = xdf.copy()       # collapse INDEPENDIENTES
-print(xxdf.head(10)['partido'])
+#print(xxdf.head(10)['partido'])
 xxdf['partido'] = xxdf.partido.apply(lambda p: p.replace('-IND','')) # fixer
-print(xxdf.head(10)['partido'])
+#print(xxdf.head(10)['partido'])
 #dos
 ddf = xxdf.groupby('distrito').sum()
 psdf = ddf.drop('largo', axis=1)
@@ -137,6 +137,29 @@ print('PLOTTED: listas')
 #################################
 pxdf = xdf.copy()
 pxdf['partido'] = pxdf['partido'].apply(lambda p: p[:-4] if p[-4:]=='-IND' else p)   # IND RN -> RN
+
+lisdf = pxdf.groupby('lista').sum()
+print('CAVEAT:');print(pxdf.value_counts('lista').head(10))
+
+fig, ax = plt.subplots(1, figsize=(24,12))
+lisdf = lisdf.drop(columns=['largo'], axis=1)
+ts = lisdf.sum(axis=1).sort_values().reset_index()
+ts.columns = ['lista','total_menciones']
+ts = ts.tail(20)
+sns.barplot(x='total_menciones', data=ts.sort_values('total_menciones'), 
+            y='lista', palette='RdYlGn')
+#for xx in range(200,1000,200):    plt.axvline(x=xx, color='blue')
+
+plt.title('Menciones ambientales por tema y lista', size=24)
+plt.savefig('static/heatmap_listas.png')
+plt.close()
+schtoops
+##########schtoops###########
+
+
+
+
+
 sdf = pxdf.groupby('partido').sum()
 sdf[sdf.columns[1:]].head()
 
@@ -148,7 +171,7 @@ psdf = sdf[sdf.index.isin(partidos)]
 fig, ax = plt.subplots(1, figsize=(24,12))
 p=sns.heatmap(psdf[temas].replace(0,np.nan), annot=True, annot_kws={'size':16, 'weight': 'bold'}, 
               cmap='RdYlGn', fmt='.0f');
-plt.xticks(rotation=45)
+#plt.xticks(rotation=45)
 plt.title('Menciones ambientales por tema y partido (incluye independientes)', size=24);
 plt.savefig('static/heatmap_partidosI.png')
 plt.close()
