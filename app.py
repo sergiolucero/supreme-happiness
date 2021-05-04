@@ -1,7 +1,7 @@
 from flask import Flask, make_response, render_template, request, jsonify
 from flask_cors import CORS
 import glob, sqlite3, pandas as pd
-
+# get_candy not being used
 from searcher import querier, cubicalo, get_candy
 from publish_candidatos import pc
 
