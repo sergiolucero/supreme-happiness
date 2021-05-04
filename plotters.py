@@ -145,6 +145,7 @@ fig, ax = plt.subplots(1, figsize=(24,12))
 lisdf = lisdf.drop(columns=['largo'], axis=1)
 ts = lisdf.sum(axis=1).sort_values().reset_index()
 ts.columns = ['lista','total_menciones']
+wena
 ts = ts.tail(20)
 sns.barplot(x='total_menciones', data=ts.sort_values('total_menciones'), 
             y='lista', palette='RdYlGn')
