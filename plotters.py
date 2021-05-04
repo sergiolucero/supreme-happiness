@@ -201,9 +201,9 @@ for tema in temas:
                 cmap='RdYlGn', fmt='.0f');
 
 #plt.xticks(rotation=45)
-plt.title(f'Menciones del concepto {tema} y partido (excluye independientes)', size=24);
-plt.savefig(f'static/heatmap_partidos_{tema}.png')
-plt.close()
+    plt.title(f'Menciones del concepto {tema} y partido (excluye independientes)', size=24);
+    plt.savefig(f'static/heatmap_partidos_{tema}.png')
+    plt.close()
 
 tdf = psdf[psdf.index!='INDEPENDIENTES'][temas].reset_index()
 tdf['partido'] = tdf['partido'].apply(lambda p: p[4:]+'-IND ' if p[:3]=='IND' else p)   # IND RN -> RN
