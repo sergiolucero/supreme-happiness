@@ -3,6 +3,7 @@ from flask_cors import CORS
 import glob, sqlite3, pandas as pd
 
 from searcher import querier, cubicalo, get_candy
+from publish_candidatos import pc
 
 sql = lambda q: pd.read_sql(q, sqlite3.connect('greenpeace.db'))
 
@@ -42,8 +43,8 @@ def hello():
 
 @app.route('/candidatos')
 def candidatos():
-    cdata = get_candy()
-
+    #cdata = get_candy()
+    cdata = pc()
     return render_template('candidatos.html', cdata=cdata)
 
 @app.route('/distritos')

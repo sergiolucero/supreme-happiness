@@ -18,18 +18,19 @@ for conc, cdata in non.items():
     for candy, quotedata in cdata.items():
         candick[candy] +=len(quotedata)
 
-data = dict(candis=list(candick.items()),nMenciones=list(candick.values()))
+def pc():
+    data = dict(candis=list(candick.items()),nMenciones=list(candick.values()))
 
-cdf = pd.DataFrame(data)
-cdf['partido']=cdf.candis.apply(lambda c: c[0].split('[')[1][:-1]
+    cdf = pd.DataFrame(data)
+    cdf['partido']=cdf.candis.apply(lambda c: c[0].split('[')[1][:-1]
                                 if '[' in c[0] else c[0])
-cdf['candidato']=cdf['candis'].apply(lambda c:c[0])
-cdf['candidato']=cdf.candidato.apply(lambda c:c.split('<BR>')[0])
-cdf=cdf[['candidato','partido','nMenciones']]
-cdf = cdf.sort_values('nMenciones', ascending=False)
-
-fw = open('static/candidatos.html', 'w')
-fw.write('''<link rel= "stylesheet" type= "text/css" href= "{{ url_for('static',filename='styles/df_style.css') }}>''')
-fw.write('<H2>Candidatos ordenados por menciones del concepto AGUA</H2>')
-cdf.to_html(fw, index=False, classes='mystyle')
-fw.close()
+    cdf['candidato']=cdf['candis'].apply(lambda c:c[0])
+    cdf['candidato']=cdf.candidato.apply(lambda c:c.split('<BR>')[0])
+    cdf=cdf[['candidato','partido','nMenciones']]
+    cdf = cdf.sort_values('nMenciones', ascending=False)
+    return cdf.to_html(classes='mystyle')
+#fw = open('static/candidatos.html', 'w')
+#fw.write('''<link rel= "stylesheet" type= "text/css" href= "{{ url_for('static',filename='styles/df_style.css') }}>''')
+#fw.write('<H2>Candidatos ordenados por menciones del concepto AGUA</H2>')
+#cdf.to_html(fw, index=False, classes='mystyle')
+#fw.close()
