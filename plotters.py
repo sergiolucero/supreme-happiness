@@ -153,7 +153,7 @@ for xx in (1000,2000):
     plt.axvline(x=xx, color='blue')
 ax.yaxis.set_label_position("right")
 ax.yaxis.tick_right()   # all this works!
-plt.margins(x=0.4)
+#plt.margins(x=0.4)
 
 plt.title('Menciones ambientales por tema y lista', size=24)
 plt.savefig('static/barplot_listas.png')
