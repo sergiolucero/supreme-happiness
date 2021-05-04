@@ -145,7 +145,6 @@ fig, ax = plt.subplots(1, figsize=(24,12))
 lisdf = lisdf.drop(columns=['largo'], axis=1)
 ts = lisdf.sum(axis=1).sort_values().reset_index()
 ts.columns = ['lista','total_menciones']
-wena
 ts = ts.tail(20)
 sns.barplot(x='total_menciones', data=ts.sort_values('total_menciones'), 
             y='lista', palette='RdYlGn')
@@ -154,8 +153,8 @@ for xx in (1000,2000):
 ax.yaxis.set_label_position("right")
 ax.yaxis.tick_right()   # all this works!
 #plt.margins(x=0.4)
-
-plt.title('Menciones ambientales por tema y lista', size=24)
+plt.xlim([0,2600])
+plt.title('Menciones ambientales por tema y lista (top 20)', size=24)
 plt.savefig('static/barplot_listas.png')
 plt.close()
 ##########schtoops###########
