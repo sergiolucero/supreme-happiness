@@ -148,17 +148,14 @@ ts.columns = ['lista','total_menciones']
 ts = ts.tail(20)
 sns.barplot(x='total_menciones', data=ts.sort_values('total_menciones'), 
             y='lista', palette='RdYlGn')
-#for xx in range(200,1000,200):    plt.axvline(x=xx, color='blue')
+for xx in (1000,2000):    
+    plt.axvline(x=xx, color='blue')
+plt.margins(x=0.3)
 
 plt.title('Menciones ambientales por tema y lista', size=24)
-plt.savefig('static/heatmap_listas.png')
+plt.savefig('static/barplot_listas.png')
 plt.close()
-schtoops
 ##########schtoops###########
-
-
-
-
 
 sdf = pxdf.groupby('partido').sum()
 sdf[sdf.columns[1:]].head()
