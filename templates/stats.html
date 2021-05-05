@@ -1,5 +1,5 @@
 <TABLE BORDER=2>
 {% for file, link in flinks %}
-<TR><TD>{{file}}</TD><TD>{{link|safe}}</TD></TR>
+<TR><TD>{{file}}</TD><TD><A HREF="{{link|safe}}">link</A></TD></TR>
 {% endfor %}
 </TABLE>
