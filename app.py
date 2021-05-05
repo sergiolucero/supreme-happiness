@@ -22,7 +22,7 @@ def verlas(query, ancho):
 
 @app.route('/sdir')
 def show_stat():
-    files = list(glob.glob('static/*'))
+    files = sorted(list(glob.glob('static/*')))
     links = ['http://greenpeace-monitor.herokuapp.com/static/%s' %fn.split('/')[1]
             for fn in files]
     flinks = zip(files, links)
