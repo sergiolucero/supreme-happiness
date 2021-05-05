@@ -20,6 +20,14 @@ def verlas(query, ancho):
                             nMatches=nMatches, 
                             mencion=query)
 
+@app.route('/sdir')
+def show_stat():
+    files = list(glob.glob('static/*'))
+    links = ['http://greenpeace-monitor.herokuapp.com/static/%s' %fn[12:] 
+            for fn in files]
+    return render_template('stats.html', files=files, links=links)
+
+
 @app.route('/ver_menciones_ori/<query>/<ancho>', methods=['GET','POST'])
 def verlas_ori(query, ancho):
 

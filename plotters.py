@@ -10,7 +10,8 @@ from matplotlib.offsetbox import AnnotationBbox, OffsetImage
 
 files = list(glob.glob('TEXTOS/TODOS/*.txt'))
 textos = [open(fn).read() for fn in files]		# ACTUALIZADO!
-
+temas = ['agua','clima', 'medioambiente']
+########################################################
 df = pd.DataFrame(dict(archivo=files, texto=textos))
 df['distrito'] = [fn.split('/')[2].split('_')[0] for fn in files]
 df['distrito'] = ['D%02d' %(int(dist[1:])) for dist in df.distrito]
@@ -89,50 +90,80 @@ def fix_list(lis):
     #print(lis, flis)
     return flis
 
-for dist, dxdf in xdf.groupby('distrito'):
-    dxdf['lista']= dxdf.lista.apply(fix_list)
+doPlotD = False
+if doPlotD:
+    for dist, dxdf in xdf.groupby('distrito'):
+        dxdf['lista']= dxdf.lista.apply(fix_list)
 
-    dldf = dxdf.groupby('lista').sum()
-    psdf = dldf.drop('largo', axis=1)
-    fig, ax =  plt.subplots(1, figsize=(14,8))
-    fig.subplots_adjust(right=0.8)
-    p=sns.heatmap(psdf.replace(0,np.nan), annot=True, 
+        dldf = dxdf.groupby('lista').sum()
+        psdf = dldf.drop('largo', axis=1)
+        fig, ax =  plt.subplots(1, figsize=(14,8))
+        fig.subplots_adjust(right=0.8)
+        p=sns.heatmap(psdf.replace(0,np.nan), annot=True, 
                 annot_kws={'size':20, 'weight': 'bold'}, 
               cmap='RdYlGn', fmt='.0f', cbar=False);
-    plt.xticks(fontsize=18)  # agua, clima, medio
-    plt.yticks(fontsize=14)  # agua, clima, medio
+        plt.xticks(fontsize=18)  # agua, clima, medio
+        plt.yticks(fontsize=14)  # agua, clima, medio
     #plt.margins(x=0.1)
-    plt.title(f'Menciones ambientales por tema y lista (Distrito {dist})', size=24);
-    ax.yaxis.set_label_position("right")
-    ax.yaxis.tick_right()   # all this works!
-    plt.yticks(rotation=0)
+        plt.title(f'Menciones ambientales por tema y lista (Distrito {dist})', size=24);
+        ax.yaxis.set_label_position("right")
+        ax.yaxis.tick_right()   # all this works!
+        plt.yticks(rotation=0)
     #for tick in ax.get_yticklabels():
     #    tick(rotation=45)  # does it work?
-    plt.savefig(f'static/heatmap_listas_D{dist}.png')
+        plt.savefig(f'static/heatmap_listas_D{dist}.png')
     #print(dist,end=':')
-    plt.close()
+        plt.close()
+
+        for tema in temas:
+            #print('TEMA:', tema)
+            tpidf=psdf[[tema]]
+            fig, ax = plt.subplots(1, figsize=(24,12))
+            p = sns.heatmap(tpidf.replace(0, np.nan),                   # PLOT1: por partido
+              annot=True, annot_kws={'size':16, 'weight': 'bold'}, 
+                cmap='RdYlGn', fmt='.0f');
+            plt.title(f'Menciones del concepto {tema} por partido (excluye independientes)', size=24);
+            plt.savefig(f'static/heatmap_D{dist}_{tema}.png')
+            plt.close()
+
+
 print('PLOTTED: distritos')
 #############################
-for lista, dxdf in xdf.groupby('lista'):
-    clista = lista.replace(' ','_').replace('(','').replace(')','').replace('_/_','_')
-    dldf = dxdf.groupby('distrito').sum()
-    psdf = dldf.drop('largo', axis=1)
+plotLD = False
+if plotLD:
+    for lista, dxdf in xdf.groupby('lista'):
+        clista = lista.replace(' ','_').replace('(','').replace(')','').replace('_/_','_')
+        dldf = dxdf.groupby('distrito').sum()
+        psdf = dldf.drop('largo', axis=1)
 
-    fig, ax =  plt.subplots(1, figsize=(24,12))
-    p = sns.heatmap(psdf.replace(0,np.nan), annot=True, 
+        fig, ax =  plt.subplots(1, figsize=(24,12))
+        p = sns.heatmap(psdf.replace(0,np.nan), annot=True, 
                   annot_kws={'size':20, 'weight': 'bold'}, 
                   cmap='RdYlGn', fmt='.0f', cbar=False);
     #plt.xticks(rotation=45)
-    plt.xticks(fontsize=18)  # agua, clima, medio
+        plt.xticks(fontsize=18)  # agua, clima, medio
     #plt.yticks(rotation=0)
     #plt.margins(x=0.1)
-    plt.title(f'Menciones ambientales por tema lista {clista})', size=24);
-    ax.yaxis.set_label_position("right")
-    ax.yaxis.tick_right()
-    plt.yticks(rotation=0)  # does it work? 90 don't
-    plt.savefig(f'static/heatmap_lista_{clista}.png')
-    print(dist,end=':')
-    plt.close()
+        plt.title(f'Menciones ambientales por tema lista {clista})', size=24);
+        ax.yaxis.set_label_position("right")
+        ax.yaxis.tick_right()
+        plt.yticks(rotation=0)  # does it work? 90 don't
+        plt.savefig(f'static/heatmap_lista_{clista}.png')
+        #print(dist,end=':')
+
+        plt.close()
+
+        for tema in temas:
+            print('TEMA:', tema)
+            tpidf=dxdf[[tema]]
+            fig, ax = plt.subplots(1, figsize=(24,12))
+            p = sns.heatmap(tpidf.replace(0, np.nan),                   # PLOT1: por partido
+              annot=True, annot_kws={'size':16, 'weight': 'bold'}, 
+                cmap='RdYlGn', fmt='.0f');
+            plt.title(f'Menciones del concepto {tema} por partido (excluye independientes)', size=24);
+            plt.savefig(f'static/heatmap_lista_{clista}_{tema}.png')
+            plt.close()
+
 print('PLOTTED: listas')
 #################################
 pxdf = xdf.copy()
@@ -186,7 +217,7 @@ pidf.index = [p.replace('PARTIDO ','P.').replace('REGIONALISTA ','REG.') for p i
 fig, ax = plt.subplots(1, figsize=(24,12))
 p = sns.heatmap(pidf[temas].replace(0, np.nan),                   # PLOT1: por partido
               annot=True, annot_kws={'size':16, 'weight': 'bold'}, 
-                cmap='RdYlGn', fmt='.0f');
+               cmap='RdYlGn', fmt='.0f');
 #plt.xticks(rotation=45); plt.title('Menciones ambientales por tema y partido (excluye independientes)', size=24);
 plt.savefig('static/heatmap_partidos.png')
 plt.close()
@@ -199,9 +230,7 @@ for tema in temas:
     p = sns.heatmap(tpidf.replace(0, np.nan),                   # PLOT1: por partido
               annot=True, annot_kws={'size':16, 'weight': 'bold'}, 
                 cmap='RdYlGn', fmt='.0f');
-
-#plt.xticks(rotation=45)
-    plt.title(f'Menciones del concepto {tema} y partido (excluye independientes)', size=24);
+    plt.title(f'Menciones del concepto {tema} por partido (excluye independientes)', size=24);
     plt.savefig(f'static/heatmap_partidos_{tema}.png')
     plt.close()
 

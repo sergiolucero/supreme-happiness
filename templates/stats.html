@@ -1,0 +1,5 @@
+<TABLE BORDER=2>
+{% for file, link in flinks %}
+<TR><TD>{{file}}</TD><TD>{{link|safe}}</TD></TR>
+{% endfor %}
+</TABLE>
