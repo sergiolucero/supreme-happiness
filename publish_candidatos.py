@@ -12,6 +12,7 @@ from collections import defaultdict
 candick = defaultdict(int)
 # WATER ONLY NOW!
 non = {'agua': non['agua']}
+
 for conc, cdata in non.items():
     print(conc, len(cdata))
 
@@ -26,7 +27,7 @@ def pc():
                                 if '[' in c[0] else c[0])
     cdf['candidato']=cdf['candis'].apply(lambda c:c[0])
     cdf['candidato']=cdf.candidato.apply(lambda c:c.split('<BR>')[0])
-    cdf=cdf[['candidato','partido','nMenciones']]
+    cdf=cdf[['candidato','lista','nMenciones']]
     cdf = cdf.sort_values('nMenciones', ascending=False)
     return cdf.to_html(classes='mystyle')
 #fw = open('static/candidatos.html', 'w')
