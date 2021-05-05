@@ -23,9 +23,11 @@ def verlas(query, ancho):
 @app.route('/sdir')
 def show_stat():
     files = list(glob.glob('static/*'))
+    print('FILES:', files)
     links = ['http://greenpeace-monitor.herokuapp.com/static/%s' %fn[12:] 
             for fn in files]
-    return render_template('stats.html', files=files, links=links)
+    flinks = zip(files, links)
+    return render_template('stats.html', flinks=flinks)
 
 
 @app.route('/ver_menciones_ori/<query>/<ancho>', methods=['GET','POST'])
