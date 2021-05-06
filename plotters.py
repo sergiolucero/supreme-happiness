@@ -62,7 +62,7 @@ ldf = xdf.groupby('lista').sum().reset_index()
 print(ldf.columns)
 ldf = ldf.drop(['largo'], axis=1)
 ldf.to_excel('static/menciones_por_lista.xlsx',index=False)
-wow
+#wow
 xxdf = xdf.copy()       # collapse INDEPENDIENTES
 #print(xxdf.head(10)['partido'])
 xxdf['partido'] = xxdf.partido.apply(lambda p: p.replace('-IND','')) # fixer
