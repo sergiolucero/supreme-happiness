@@ -204,8 +204,9 @@ for tema in temas:
         plt.axvline(x=xx, color='blue')
     ax.yaxis.set_label_position("right")
     ax.yaxis.tick_right()   # all this works!
-    plt.margins(x=0.2)
-    plt.xlim([0,1000])
+    plt.subplots_adjust(left=0.1, right=0.7, top=0.9, bottom=0.1)
+    #plt.margins(x=0.2)
+    plt.xlim([0,1000] if tema=='agua' else [0,600])
     plt.title(f'Menciones por lista del tema {tema} (top 20)', size=24)
     plt.savefig(f'static/barplot_listas_{tema}.png')
     plt.close()
