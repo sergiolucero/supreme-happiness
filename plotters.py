@@ -47,7 +47,7 @@ for conc, mens in kw.items():
 xdf['partido'] = xdf.partido.apply(lambda p: p.split('IND ')[1]+'-IND' if 'IND ' in p else p) # fixer
 xdf['lista'] = xdf.lista.apply(lambda x: x.split('(')[0] if '(' in x else x)
 #do
-print('B4:', len(xdf))
+#print('B4:', len(xdf))
 udi = xdf[xdf.partido=='UNION DEMOCRATA INDEPENDIENTE']
 udi.to_html('static/udi.html', index=False)
 udi2 = udi[udi.candidato=='DIEGO RIVEAUX MARCET']
@@ -55,7 +55,12 @@ udi2.iloc[0]['medioambiente']=2
 print('LENU:', len(udi2))
 xdf = xdf[xdf.partido!='UNION DEMOCRATA INDEPENDIENTE']
 xdf = xdf.append(udi2)
-print('Afta:', len(xdf))
+#print('Afta:', len(xdf))
+xdf['total_menciones'] = xdf['agua']+xdf['clima']+xdf['medioambiente']
+#xdf = xdf.drop(['texto','largo'],axis=1)
+ldf = xdf.groupby('lista').sum()
+ldf.to_excel('static/menciones_por_lista.xlsx', index=False)
+#wena
 #sexi    
 #xdf.to_csv('static/xdata.csv.zip', compression='zip', index=False)
 #wow
