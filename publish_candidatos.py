@@ -27,14 +27,14 @@ def pc():
                                 if '[' in c[0] else c[0])
     cdf['candidato']=cdf['candis'].apply(lambda c:c[0])
     cdf['candidato']=cdf.candidato.apply(lambda c:c.split('<BR>')[0])  # aqui ya es DX_AIDA_JOSE_...
-    #cdf=cdf[['candidato','partido','nMenciones']]
+    cdf=cdf[['candidato','partido','nMenciones']]
     xdf = sql('SELECT candidato, lista FROM candidatos')
 
-    cdf['lista'] = cdf.candidato.apply(lambda x: xdf[xdf.candidato==x.split('_')[1:]])
-    wen
+    #cdf['lista'] = cdf.candidato.apply(lambda x: xdf[xdf.candidato==x.split('_')[1:]])
+    #wen
     #cdf = cdf.merge(xdf)
-    wot
-    cdf=cdf[['candidato','lista','nMenciones']]
+    #wot
+    #cdf=cdf[['candidato','lista','nMenciones']]
 
     cdf = cdf.sort_values('nMenciones', ascending=False)
     return cdf.to_html(classes='mystyle')
