@@ -189,7 +189,8 @@ ax.yaxis.set_label_position("right")
 ax.yaxis.tick_right()   # all this works!
 #plt.margins(x=0.4)
 plt.xlim([0,2600])
-plt.title('Menciones ambientales por tema y lista (top 20)', size=24)
+plt.title('Menciones ambientales TOTALES por lista (top 20)', size=24)
+plt.subplots_adjust(left=0.0, right=0.6, top=0.9, bottom=0.1)
 plt.savefig('static/barplot_listas.png')
 plt.close()
 ##########schtoops###########
@@ -204,7 +205,7 @@ for tema in temas:
         plt.axvline(x=xx, color='blue')
     ax.yaxis.set_label_position("right")
     ax.yaxis.tick_right()   # all this works!
-    plt.subplots_adjust(left=0.1, right=0.7, top=0.9, bottom=0.1)
+    plt.subplots_adjust(left=0.05, right=0.6, top=0.9, bottom=0.1)
     #plt.margins(x=0.2)
     plt.xlim([0,1000] if tema=='agua' else [0,600])
     plt.title(f'Menciones por lista del tema {tema} (top 20)', size=24)
