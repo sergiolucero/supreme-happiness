@@ -90,7 +90,7 @@ def fix_list(lis):
     #print(lis, flis)
     return flis
 
-doPlotD = False
+doPlotD = True
 if doPlotD:
     for dist, dxdf in xdf.groupby('distrito'):
         dxdf['lista']= dxdf.lista.apply(fix_list)
@@ -122,7 +122,7 @@ if doPlotD:
             p = sns.heatmap(tpidf.replace(0, np.nan),                   # PLOT1: por partido
               annot=True, annot_kws={'size':16, 'weight': 'bold'}, 
                 cmap='RdYlGn', fmt='.0f');
-            plt.title(f'Menciones del concepto {tema} por partido (excluye independientes)', size=24);
+            plt.title(f'Menciones del concepto {tema} por partido (Distrito {dist}, excluye independientes)', size=24);
             plt.savefig(f'static/heatmap_D{dist}_{tema}.png')
             plt.close()
 
