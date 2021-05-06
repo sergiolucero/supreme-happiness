@@ -65,8 +65,9 @@ def distritos():
 @app.route('/listas')
 def listas():
     plots = sorted(glob.glob('static/heatmap_lista_*.png'))
+    bplots = sorted(glob.glob('static/barplot_listas_*.png'))
     print('PLOTS:', plots)
-    return render_template('listas.html', plots=plots)
+    return render_template('listas.html', plots=bplots+plots)
 
 @app.route('/menciones', methods=['GET','POST'])
 def menciones():
