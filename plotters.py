@@ -58,10 +58,11 @@ xdf = xdf.append(udi2)
 #print('Afta:', len(xdf))
 xdf['total_menciones'] = xdf['agua']+xdf['clima']+xdf['medioambiente']
 #xdf = xdf.drop(['texto','largo'],axis=1)
-ldf = xdf.groupby('lista').sum()
+ldf = xdf.groupby('lista').sum().reset_index()
+print(ldf.columns)
 ldf = ldf.drop(['largo'], axis=1)
-ldf.to_excel('static/menciones_por_lista.xlsx')
-#wow
+ldf.to_excel('static/menciones_por_lista.xlsx',index=False)
+wow
 xxdf = xdf.copy()       # collapse INDEPENDIENTES
 #print(xxdf.head(10)['partido'])
 xxdf['partido'] = xxdf.partido.apply(lambda p: p.replace('-IND','')) # fixer
