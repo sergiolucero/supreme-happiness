@@ -59,10 +59,8 @@ xdf = xdf.append(udi2)
 xdf['total_menciones'] = xdf['agua']+xdf['clima']+xdf['medioambiente']
 #xdf = xdf.drop(['texto','largo'],axis=1)
 ldf = xdf.groupby('lista').sum()
-ldf.to_excel('static/menciones_por_lista.xlsx', index=False)
-#wena
-#sexi    
-#xdf.to_csv('static/xdata.csv.zip', compression='zip', index=False)
+ldf = ldf.drop(['largo'], axis=1)
+ldf.to_excel('static/menciones_por_lista.xlsx')
 #wow
 xxdf = xdf.copy()       # collapse INDEPENDIENTES
 #print(xxdf.head(10)['partido'])
