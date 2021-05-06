@@ -94,7 +94,7 @@ def fix_list(lis):
     #print(lis, flis)
     return flis
 
-doPlotD = True
+doPlotD = False
 if doPlotD:
     for dist, dxdf in xdf.groupby('distrito'):
         dxdf['lista']= dxdf.lista.apply(fix_list)
@@ -194,6 +194,11 @@ plt.savefig('static/barplot_listas.png')
 plt.close()
 ##########schtoops###########
 
+
+
+
+##########schtoops###########
+
 sdf = pxdf.groupby('partido').sum()
 sdf[sdf.columns[1:]].head()
 
@@ -241,6 +246,7 @@ for tema in temas:
 tdf = psdf[psdf.index!='INDEPENDIENTES'][temas].reset_index()
 tdf['partido'] = tdf['partido'].apply(lambda p: p[4:]+'-IND ' if p[:3]=='IND' else p)   # IND RN -> RN
 #ts = pd.DataFrame(tdf.sum(axis=1).reset_index())
+############## GRAFICO DE BARRAS POR PARTIDO: make stacks
 ts = tdf.groupby('partido').sum().sum(axis=1).sort_values().reset_index()
 ts.columns = ['partido','total_menciones']
 ts = ts[ts.total_menciones>0]
@@ -254,7 +260,24 @@ arr_lena = mpimg.imread('greenpeace.png')
 imagebox = OffsetImage(arr_lena, zoom=1.0)
 ab = AnnotationBbox(imagebox, (825, 1.0))
 ax.add_artist(ab)
-
+#################
 plt.title('Ranking partidos políticos por número total de menciones', size=20)
 plt.savefig('static/ranking.png')
 plt.close()
+##################
+ts = tdf.groupby('partido').sum().sum(axis=1).sort_values().reset_index()
+sdf = ts.groupby('partido').size()
+was
+ts.columns = ['partido','total_menciones']
+ts = ts[ts.total_menciones>0]
+fig,ax = plt.subplots(1, figsize=(24,12))
+sns.barplot(x='total_menciones', data=ts.sort_values('total_menciones'), y='partido', palette='RdYlGn');
+for xx in range(200,1000,200):
+    plt.axvline(x=xx, color='blue')
+plt.margins(x=0.1)
+
+arr_lena = mpimg.imread('greenpeace.png')
+imagebox = OffsetImage(arr_lena, zoom=1.0)
+ab = AnnotationBbox(imagebox, (825, 1.0))
+ax.add_artist(ab)
+
