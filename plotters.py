@@ -195,7 +195,7 @@ plt.close()
 ##########schtoops###########
 for tema in temas:
     tdf=xdf[['lista',tema]]
-    #tdf = xdf[.groupby('
+    tdf['lista']= tdf.lista.apply(fix_list)
     fig, ax = plt.subplots(1, figsize=(24,12))
     ts = xdf.groupby('lista').sum().reset_index()
     sns.barplot(x=tema, data=ts.sort_values(tema).tail(20), 
@@ -204,7 +204,7 @@ for tema in temas:
         plt.axvline(x=xx, color='blue')
     ax.yaxis.set_label_position("right")
     ax.yaxis.tick_right()   # all this works!
-#plt.margins(x=0.4)
+    plt.margins(x=0.2)
     plt.xlim([0,1000])
     plt.title(f'Menciones por lista del tema {tema} (top 20)', size=24)
     plt.savefig(f'static/barplot_listas_{tema}.png')
