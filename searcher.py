@@ -28,7 +28,7 @@ def get_lista(c):
     sc = ' '.join(c.split('_')[1:])
     try:
         lista = sql(f"SELECT lista FROM candidatos WHERE candidato='{sc}'").values[0][0]
-        return c+'<BR>'+f'[{partido}]'
+        return c+'<BR>'+f'[{lista}]'
     except:  # not found
         return c+ '(N/A)'
 
@@ -120,7 +120,8 @@ def querier(query, WIDTH=80, tipo=None):
 
         if len(fmatches):
             nMenciones += len(fmatches)
-            ptfile = get_party(tfile)
+            #ptfile = get_party(tfile)
+            ptfile = get_lista(tfile)
             #ptfile = 
             #print(tfile, ptfile)
             if isinstance(squery, list):
