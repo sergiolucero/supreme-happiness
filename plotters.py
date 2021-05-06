@@ -200,7 +200,7 @@ plt.close()
 ##########schtoops###########
 
 sdf = pxdf.groupby('partido').sum()
-sdf[sdf.columns[1:]].head()
+#sdf[sdf.columns[1:]].head()
 
 temas = [k for k,v in sdf.sum().to_dict().items() if v>10 and k!='largo']
 
@@ -267,7 +267,6 @@ plt.close()
 ##################
 ts = tdf.groupby('partido').sum().sum(axis=1).sort_values().reset_index()
 sdf = ts.groupby('partido').size()
-was
 ts.columns = ['partido','total_menciones']
 ts = ts[ts.total_menciones>0]
 fig,ax = plt.subplots(1, figsize=(24,12))
