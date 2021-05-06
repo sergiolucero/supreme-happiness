@@ -24,6 +24,14 @@ def get_party(c):
     except:  # not found
         return c+ '(N/A)'
 
+def get_lista(c):
+    sc = ' '.join(c.split('_')[1:])
+    try:
+        lista = sql(f"SELECT lista FROM candidatos WHERE candidato='{sc}'").values[0][0]
+        return c+'<BR>'+f'[{partido}]'
+    except:  # not found
+        return c+ '(N/A)'
+
 def party(c):
     sc = ' '.join(c.split('_')[1:])
     try:
