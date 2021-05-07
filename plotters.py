@@ -174,7 +174,7 @@ pxdf = xdf.copy()
 pxdf['partido'] = pxdf['partido'].apply(lambda p: p[:-4] if p[-4:]=='-IND' else p)   # IND RN -> RN
 
 lisdf = pxdf.groupby('lista').sum()
-print('CAVEAT:');print(pxdf.value_counts('lista').head(10))
+#print('CAVEAT:');print(pxdf.value_counts('lista').head(10))
 
 fig, ax = plt.subplots(1, figsize=(24,12))
 lisdf = lisdf.drop(columns=['largo'], axis=1)
@@ -188,7 +188,7 @@ for xx in (1000,2000):
 ax.yaxis.set_label_position("right")
 ax.yaxis.tick_right()   # all this works!
 #plt.margins(x=0.4)
-plt.xlim([0,3500])
+plt.xlim([0,4000])
 plt.title('Menciones ambientales TOTALES por lista (top 20)', size=24)
 plt.subplots_adjust(left=0.1, right=0.6, top=0.9, bottom=0.1)
 plt.savefig('static/barplot_listas.png')
