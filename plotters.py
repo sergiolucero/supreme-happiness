@@ -181,6 +181,8 @@ lisdf = lisdf.drop(columns=['largo'], axis=1)
 ts = lisdf.sum(axis=1).sort_values().reset_index()
 ts.columns = ['lista','total_menciones']
 ts['total_menciones']=ts.total_menciones/2       # está duplicada
+#print(ts)
+#wn
 ts = ts.tail(20)
 sns.barplot(x='total_menciones', data=ts.sort_values('total_menciones'), 
             y='lista', palette='RdYlGn')
@@ -208,7 +210,7 @@ for tema in temas:
     ax.yaxis.tick_right()   # all this works!
     plt.subplots_adjust(left=0.05, right=0.6, top=0.9, bottom=0.1)
     #plt.margins(x=0.2)
-    plt.xlim([0,1000] if tema=='agua' else [0,400] if tema=='clima' else [0,1000])
+    plt.xlim([0,1000] if tema=='agua' else [0,400] if tema=='clima' else [0,1500])
     plt.title(f'Menciones por lista del tema {tema} (top 20)', size=24)
     plt.savefig(f'static/barplot_listas_{tema}.png')
     plt.close()
