@@ -188,7 +188,7 @@ for xx in (1000,2000):
 ax.yaxis.set_label_position("right")
 ax.yaxis.tick_right()   # all this works!
 #plt.margins(x=0.4)
-plt.xlim([0,2600])
+plt.xlim([0,3000])
 plt.title('Menciones ambientales TOTALES por lista (top 20)', size=24)
 plt.subplots_adjust(left=0.0, right=0.6, top=0.9, bottom=0.1)
 plt.savefig('static/barplot_listas.png')
@@ -207,7 +207,7 @@ for tema in temas:
     ax.yaxis.tick_right()   # all this works!
     plt.subplots_adjust(left=0.05, right=0.6, top=0.9, bottom=0.1)
     #plt.margins(x=0.2)
-    plt.xlim([0,1000] if tema=='agua' else [0,600])
+    plt.xlim([0,1000] if tema=='agua' else [0,800])
     plt.title(f'Menciones por lista del tema {tema} (top 20)', size=24)
     plt.savefig(f'static/barplot_listas_{tema}.png')
     plt.close()
