@@ -190,7 +190,7 @@ ax.yaxis.tick_right()   # all this works!
 #plt.margins(x=0.4)
 plt.xlim([0,3500])
 plt.title('Menciones ambientales TOTALES por lista (top 20)', size=24)
-plt.subplots_adjust(left=0.0, right=0.6, top=0.9, bottom=0.1)
+plt.subplots_adjust(left=0.1, right=0.6, top=0.9, bottom=0.1)
 plt.savefig('static/barplot_listas.png')
 plt.close()
 ##########schtoops###########
