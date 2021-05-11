@@ -236,6 +236,7 @@ ax.yaxis.tick_right()   # all this works!
 plt.xlim([0,3000])
 #plt.title('Menciones ambientales TOTALES por lista (top 20)', size=24)
 plt.title('Menciones ambientales POR CANDIDATO de cada lista (top 20)', size=24)
+plt.autoscale(enable=True, axis='x', tight=True)
 plt.subplots_adjust(left=0.1, right=0.6, top=0.9, bottom=0.1)
 plt.savefig('static/barplot_listas.png')
 plt.close()
