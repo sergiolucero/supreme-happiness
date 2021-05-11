@@ -1,7 +1,0 @@
-concepto,tema
-agua,agua
-clima,emergencia climática
-clima,crisis climática
-clima,cambio climático
-medioambiente,medioambiente
-medioambiente,medio ambiente

@@ -17,11 +17,18 @@ df['distrito'] = [fn.split('/')[2].split('_')[0] for fn in files]
 df['distrito'] = ['D%02d' %(int(dist[1:])) for dist in df.distrito]
 df['largo'] = df.texto.apply(len)
 df['candidato'] = [' '.join(fn.split('/')[2].split('_')[1:])[:-4] for fn in files]
+############ FINAL COUNTDOWN: normalized and MERGED lists ***
 
 cdf=sql('SELECT * FROM candidatos')
 xdf=df.merge(cdf, on='candidato').drop(['archivo','distrito_y','programa'],axis=1)
 xdf=xdf.rename(columns={'distrito_x':'distrito'})
 xdf['partido'] = xdf.partido.apply(lambda p: p.replace('PARTIDO ','P.').replace('REGIONALISTA ','REG.'))
+xdf['lista'] = xdf.lista.apply(lambda lis: lis.replace('  ',' '))
+xdf['lista'] = xdf.lista.apply(lambda lis: lis.rstrip())
+#xdf.to_csv('candidatos_fixed.csv', index=False)
+xdf = pd.read_csv('candidatos_fixed.csv')
+
+
 #kw = pd.read_csv('keywords.txt', names=['palabra'])
 kw = eval(open('keywords_final.txt').read())
 #kw['palabra'] = kw.palabra.apply(lambda p: p.split('\t')[1])
@@ -46,6 +53,11 @@ for conc, mens in kw.items():
 
 xdf['partido'] = xdf.partido.apply(lambda p: p.split('IND ')[1]+'-IND' if 'IND ' in p else p) # fixer
 xdf['lista'] = xdf.lista.apply(lambda x: x.split('(')[0] if '(' in x else x)
+
+
+
+#C 
+
 #do
 #print('B4:', len(xdf))
 udi = xdf[xdf.partido=='UNION DEMOCRATA INDEPENDIENTE']
@@ -85,14 +97,38 @@ plt.title('Menciones ambientales por tema y distrito (excluye independientes)', 
 plt.savefig('static/heatmap_distritos.png')
 plt.close()
 #############################
+PUEBLO = ['Corrientes Independientes', 'A Pulso, Por el Buen Vivir', 'Asamblea Constituyente Atacama',
+          'Insulares e Independientes', 'Coordinadora Social de Magallanes']
+PUEBLO = [x.lower() for x in PUEBLO]
+##################
 def fix_list(lis):
     slis = lis.split()
+
     if len(slis)>3:
         flis = (' '.join(slis[:3]))+chr(10)+(' '.join(slis[3:]))
     else:
         flis = lis
     #print(lis, flis)
     return flis
+
+def fixer_two(flis):
+    if flis.lower()[:len('Independientes')]=='independientes' or 'magallanes' in flis.lower():
+        flis = 'Independientes No Neutrales (UNIFICADA)'
+    elif (flis.lower() in PUEBLO) or 'lista del pueblo' in flis.lower():
+        flis = 'Lista del Pueblo (UNIFICADA)'
+
+    return flis
+
+xdf['lista']
+#xdf['lista2'] = xdf.lista.apply(fixer_two)
+#xdf['lista'] = xdf.lista.apply(lambda lis: 'if lis=='LISTA DEL PUEBLO '
+#lvc = xdf.groupby(['lista','flista']).size()
+#lvc = xdf.groupby(['lista']).size()
+#ldp = xdf[xdf.lista2=='Lista del Pueblo (UNIFICADA)']
+#lin = xdf[xdf.lista2=='Independientes No Neutrales (UNIFICADA)']
+#print('PUEBLO:', len(ldp), 'INDY:', len(lin))
+#wena
+#print(lvc.head(20))
 
 doPlotD = False
 if doPlotD:
@@ -172,27 +208,34 @@ print('PLOTTED: listas')
 #################################
 pxdf = xdf.copy()
 pxdf['partido'] = pxdf['partido'].apply(lambda p: p[:-4] if p[-4:]=='-IND' else p)   # IND RN -> RN
-
-lisdf = pxdf.groupby('lista').sum()
+lisdf = pxdf.groupby('lista').agg({'total_menciones':['sum',len]}).reset_index()
+jose = lisdf
+jose.columns=['lista','total','nCandidatos']
+jose['por_candidato'] = jose.total/jose.nCandidatos
+lisdf = jose # albibaq
+#list_size = pxdf.groupby('lista').size()
 #print('CAVEAT:');print(pxdf.value_counts('lista').head(10))
 
 fig, ax = plt.subplots(1, figsize=(24,12))
-lisdf = lisdf.drop(columns=['largo'], axis=1)
-ts = lisdf.sum(axis=1).sort_values().reset_index()
-ts.columns = ['lista','total_menciones']
-ts['total_menciones']=ts.total_menciones/2       # está duplicada
+#lisdf = lisdf.drop(columns=['largo'], axis=1)
+#ts = lisdf.sum(axis=1).sort_values().reset_index()
+#ts.columns = ['lista','total_menciones']
+#ts['total_menciones']=ts.total_menciones/2       # está duplicada
 #print(ts)
 #wn
-ts = ts.tail(20)
-sns.barplot(x='total_menciones', data=ts.sort_values('total_menciones'), 
+ts = lisdf.sort_values('por_candidato').tail(20)
+sns.barplot(x='por_candidato', data=ts,
             y='lista', palette='RdYlGn')
+#sns.barplot(x='total_menciones', data=ts.sort_values('total_menciones'), 
+#            y='lista', palette='RdYlGn')
 for xx in (1000,2000):    
     plt.axvline(x=xx, color='blue')
 ax.yaxis.set_label_position("right")
 ax.yaxis.tick_right()   # all this works!
 #plt.margins(x=0.4)
 plt.xlim([0,3000])
-plt.title('Menciones ambientales TOTALES por lista (top 20)', size=24)
+#plt.title('Menciones ambientales TOTALES por lista (top 20)', size=24)
+plt.title('Menciones ambientales POR CANDIDATO de cada lista (top 20)', size=24)
 plt.subplots_adjust(left=0.1, right=0.6, top=0.9, bottom=0.1)
 plt.savefig('static/barplot_listas.png')
 plt.close()
