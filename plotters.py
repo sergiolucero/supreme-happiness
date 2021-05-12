@@ -114,9 +114,9 @@ def fix_list(lis):
 
 def fixer_two(flis):
     if flis.lower()[:len('Independientes')]=='independientes' or 'magallanes' in flis.lower():
-        flis = 'Independientes No Neutrales (UNIFICADA)'
+        flis = 'INDEPENDIENTES NO NEUTRALES (UNIFICADA)'
     elif (flis.lower() in PUEBLO) or 'lista del pueblo' in flis.lower():
-        flis = 'Lista del Pueblo (UNIFICADA)'
+        flis = 'LISTA DEL PUEBLO (UNIFICADA)'
 
     return flis
 
@@ -229,10 +229,14 @@ sns.barplot(x='por_candidato', data=ts,
             y='lista', palette='RdYlGn')
 #sns.barplot(x='total_menciones', data=ts.sort_values('total_menciones'), 
 #            y='lista', palette='RdYlGn')
-#for xx in (1000,2000):    
-#    plt.axvline(x=xx, color='blue')
+for xx in (20,40):    
+    plt.axvline(x=xx, color='blue')
 ax.yaxis.set_label_position("right")
 ax.yaxis.tick_right()   # all this works!
+###   plot them numbers too!
+for idx, row in ts.iterrows():
+    plt.text(row['por_candidato']*0.9, idx+0.2, '%.2f' %row['por_candidato'])
+
 #plt.margins(x=0.4)
 #plt.xlim([0,3000])
 #plt.title('Menciones ambientales TOTALES por lista (top 20)', size=24)
@@ -248,8 +252,8 @@ for tema in temas:
     ts = xdf.groupby('lista').sum().reset_index()
     sns.barplot(x=tema, data=ts.sort_values(tema).tail(20), 
             y='lista', palette='RdYlGn')
-    for xx in (400,800):    
-        plt.axvline(x=xx, color='blue')
+    #for xx in (400,800):    
+    #    plt.axvline(x=xx, color='blue')
     ax.yaxis.set_label_position("right")
     ax.yaxis.tick_right()   # all this works!
     plt.subplots_adjust(left=0.05, right=0.6, top=0.9, bottom=0.1)
