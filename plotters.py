@@ -7,6 +7,7 @@ import seaborn as sns
 import matplotlib.pyplot as plt
 import matplotlib.image as mpimg
 from matplotlib.offsetbox import AnnotationBbox, OffsetImage
+plt.autoscale(enable=True, axis='x', tight=True)
 
 files = list(glob.glob('TEXTOS/TODOS/*.txt'))
 textos = [open(fn).read() for fn in files]		# ACTUALIZADO!
@@ -228,15 +229,14 @@ sns.barplot(x='por_candidato', data=ts,
             y='lista', palette='RdYlGn')
 #sns.barplot(x='total_menciones', data=ts.sort_values('total_menciones'), 
 #            y='lista', palette='RdYlGn')
-for xx in (1000,2000):    
-    plt.axvline(x=xx, color='blue')
+#for xx in (1000,2000):    
+#    plt.axvline(x=xx, color='blue')
 ax.yaxis.set_label_position("right")
 ax.yaxis.tick_right()   # all this works!
 #plt.margins(x=0.4)
-plt.xlim([0,3000])
+#plt.xlim([0,3000])
 #plt.title('Menciones ambientales TOTALES por lista (top 20)', size=24)
 plt.title('Menciones ambientales POR CANDIDATO de cada lista (top 20)', size=24)
-plt.autoscale(enable=True, axis='x', tight=True)
 plt.subplots_adjust(left=0.1, right=0.6, top=0.9, bottom=0.1)
 plt.savefig('static/barplot_listas.png')
 plt.close()
@@ -254,7 +254,7 @@ for tema in temas:
     ax.yaxis.tick_right()   # all this works!
     plt.subplots_adjust(left=0.05, right=0.6, top=0.9, bottom=0.1)
     #plt.margins(x=0.2)
-    plt.xlim([0,1000] if tema=='agua' else [0,400] if tema=='clima' else [0,1500])
+    #plt.xlim([0,1000] if tema=='agua' else [0,400] if tema=='clima' else [0,1500])
     plt.title(f'Menciones por lista del tema {tema} (top 20)', size=24)
     plt.savefig(f'static/barplot_listas_{tema}.png')
     plt.close()
