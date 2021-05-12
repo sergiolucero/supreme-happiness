@@ -225,7 +225,7 @@ fig, ax = plt.subplots(1, figsize=(24,12))
 #print(ts)
 #wn
 ts = lisdf.sort_values('por_candidato').tail(20)
-sns.barplot(x='por_candidato', data=ts,
+ax = sns.barplot(x='por_candidato', data=ts,
             y='lista', palette='RdYlGn')
 #sns.barplot(x='total_menciones', data=ts.sort_values('total_menciones'), 
 #            y='lista', palette='RdYlGn')
@@ -235,9 +235,10 @@ ax.yaxis.set_label_position("right")
 ax.yaxis.tick_right()   # all this works!
 ###   plot them numbers too!
 for patch in ax.patches:
-    xy = patch.get_width()*0.9, patch.get_height()+0.2
+    xy = patch.get_width()*0.9, patch._y0+0.2
     texto = '%.2f' %patch.get_width()
-    ax.annotate(texto, xy, color='blue', fontsize=12)
+    print(xy)
+    ax.annotate(texto, xy, color='blue', fontsize=16, weight='bold')
 
 #plt.margins(x=0.4)
 #plt.xlim([0,3000])
