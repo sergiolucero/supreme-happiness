@@ -212,7 +212,7 @@ pxdf['partido'] = pxdf['partido'].apply(lambda p: p[:-4] if p[-4:]=='-IND' else 
 lisdf = pxdf.groupby('lista').agg({'total_menciones':['sum',len]}).reset_index()
 jose = lisdf
 jose.columns=['lista','total','nCandidatos']
-jose['por_candidato'] = jose.total/jose.nCandidatos
+jose['menciones por candidato'] = jose.total/jose.nCandidatos
 lisdf = jose # albibaq
 #list_size = pxdf.groupby('lista').size()
 #print('CAVEAT:');print(pxdf.value_counts('lista').head(10))
@@ -224,8 +224,8 @@ fig, ax = plt.subplots(1, figsize=(24,12))
 #ts['total_menciones']=ts.total_menciones/2       # está duplicada
 #print(ts)
 #wn
-ts = lisdf.sort_values('por_candidato').tail(20)
-ax = sns.barplot(x='por_candidato', data=ts,
+ts = lisdf.sort_values('menciones por candidato').tail(20)
+ax = sns.barplot(x='menciones por candidato', data=ts,
             y='lista', palette='RdYlGn')
 #sns.barplot(x='total_menciones', data=ts.sort_values('total_menciones'), 
 #            y='lista', palette='RdYlGn')
@@ -235,9 +235,9 @@ ax.yaxis.set_label_position("right")
 ax.yaxis.tick_right()   # all this works!
 ###   plot them numbers too!
 for patch in ax.patches:
-    xy = patch.get_width()*0.9, patch._y0+0.2
+    xy = patch.get_width()*0.77, patch._y0+0.33
     texto = '%.2f' %patch.get_width()
-    print(xy)
+    #print(xy)
     ax.annotate(texto, xy, color='blue', fontsize=16, weight='bold')
 
 #plt.margins(x=0.4)
