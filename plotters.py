@@ -124,6 +124,7 @@ def fixer_two(flis):
 xdf['lista'] = xdf.lista.apply(fixer_two)
 #xdf['lista'] = xdf.lista.apply(lambda lis: 'if lis=='LISTA DEL PUEBLO '
 #lvc = xdf.groupby(['lista','flista']).size()
+
 #lvc = xdf.groupby(['lista']).size()
 ldp = xdf[xdf.lista=='LISTA DEL PUEBLO (UNIFICADA)']
 lin = xdf[xdf.lista=='INDEPENDIENTES NO NEUTRALES (UNIFICADA)']
@@ -230,6 +231,15 @@ fig, ax = plt.subplots(1, figsize=(24,12))
 #ts['total_menciones']=ts.total_menciones/2       # está duplicada
 #print(ts)
 #wn
+def label_barplot(ax):
+    for patch in ax.patches:
+        xy = patch.get_width()-2, patch._y0+0.44
+        texto = '%.2f' %patch.get_width()
+    #print(xy)
+        ax.annotate(texto, xy, color='blue', fontsize=16, weight='bold')
+
+
+
 ts = lisdf.sort_values('menciones por candidato').tail(20)
 ax = sns.barplot(x='menciones por candidato', data=ts,
             y='lista', palette='RdYlGn')
@@ -240,15 +250,11 @@ for xx in (20,40):
 ax.yaxis.set_label_position("right")
 ax.yaxis.tick_right()   # all this works!
 ###   plot them numbers too!
-for patch in ax.patches:
-    xy = patch.get_width()*0.77, patch._y0+0.33
-    texto = '%.2f' %patch.get_width()
-    #print(xy)
-    ax.annotate(texto, xy, color='blue', fontsize=16, weight='bold')
 
 #plt.margins(x=0.4)
 #plt.xlim([0,3000])
 #plt.title('Menciones ambientales TOTALES por lista (top 20)', size=24)
+label_barplot(ax)
 plt.title('Menciones ambientales POR CANDIDATO de cada lista (top 20)', size=24)
 plt.subplots_adjust(left=0.1, right=0.6, top=0.9, bottom=0.1)
 plt.savefig('static/barplot_listas.png')
@@ -259,8 +265,10 @@ for tema in temas:
     tdf['lista']= tdf.lista.apply(fix_list)
     fig, ax = plt.subplots(1, figsize=(24,12))
     ts = xdf.groupby('lista').sum().reset_index()
-    sns.barplot(x=tema, data=ts.sort_values(tema).tail(20), 
+    ax = sns.barplot(x=tema, data=ts.sort_values(tema).tail(20), 
             y='lista', palette='RdYlGn')
+    print('-'*32, tema, '-*32')
+    print(ts.sort_values(tema))
     #for xx in (400,800):    
     #    plt.axvline(x=xx, color='blue')
     ax.yaxis.set_label_position("right")
@@ -268,7 +276,8 @@ for tema in temas:
     plt.subplots_adjust(left=0.05, right=0.6, top=0.9, bottom=0.1)
     #plt.margins(x=0.2)
     #plt.xlim([0,1000] if tema=='agua' else [0,400] if tema=='clima' else [0,1500])
-    plt.title(f'Menciones por lista del tema {tema} (top 20)', size=24)
+    label_barplot(ax)
+    plt.title(f'Menciones por candidato del tema {tema} (top 20)', size=24)
     plt.savefig(f'static/barplot_listas_{tema}.png')
     plt.close()
 
