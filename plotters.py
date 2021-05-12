@@ -217,6 +217,11 @@ lisdf = pxdf.groupby('lista').agg({'total_menciones':['sum',len]}).reset_index()
 jose = lisdf
 jose.columns=['lista','total','nCandidatos']
 jose['menciones por candidato'] = jose.total/jose.nCandidatos
+claves = jose.lista.values
+candis = jose.nCandidatos.values
+candick = {claves[ix]: candis[ix] for ix in range(len(jose))}
+#jose.nCandidatos.to_dict()
+#valle
 lisdf = jose # albibaq
 
 
@@ -265,10 +270,12 @@ for tema in temas:
     tdf['lista']= tdf.lista.apply(fix_list)
     fig, ax = plt.subplots(1, figsize=(24,12))
     ts = xdf.groupby('lista').sum().reset_index()
+    # ahora los promedios
+    ts[tema]=[row[tema]/candick[row['lista']] for _,row in ts.iterrows()]
     ax = sns.barplot(x=tema, data=ts.sort_values(tema).tail(20), 
             y='lista', palette='RdYlGn')
-    print('-'*32, tema, '-*32')
-    print(ts.sort_values(tema))
+    #print('-'*32, tema, '-*32')
+    #print(ts.sort_values(tema))
     #for xx in (400,800):    
     #    plt.axvline(x=xx, color='blue')
     ax.yaxis.set_label_position("right")
