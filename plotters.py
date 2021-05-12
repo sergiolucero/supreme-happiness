@@ -120,14 +120,14 @@ def fixer_two(flis):
 
     return flis
 
-xdf['lista']
-#xdf['lista2'] = xdf.lista.apply(fixer_two)
+#xdf['lista'] = ['LISTA DEL PUEBLO (UNIFICADA)' if lista
+xdf['lista'] = xdf.lista.apply(fixer_two)
 #xdf['lista'] = xdf.lista.apply(lambda lis: 'if lis=='LISTA DEL PUEBLO '
 #lvc = xdf.groupby(['lista','flista']).size()
 #lvc = xdf.groupby(['lista']).size()
-#ldp = xdf[xdf.lista2=='Lista del Pueblo (UNIFICADA)']
-#lin = xdf[xdf.lista2=='Independientes No Neutrales (UNIFICADA)']
-#print('PUEBLO:', len(ldp), 'INDY:', len(lin))
+ldp = xdf[xdf.lista=='LISTA DEL PUEBLO (UNIFICADA)']
+lin = xdf[xdf.lista=='INDEPENDIENTES NO NEUTRALES (UNIFICADA)']
+print('PUEBLO:', len(ldp), 'INDY:', len(lin))
 #wena
 #print(lvc.head(20))
 
@@ -209,11 +209,17 @@ print('PLOTTED: listas')
 #################################
 pxdf = xdf.copy()
 pxdf['partido'] = pxdf['partido'].apply(lambda p: p[:-4] if p[-4:]=='-IND' else p)   # IND RN -> RN
+
+
+
 lisdf = pxdf.groupby('lista').agg({'total_menciones':['sum',len]}).reset_index()
 jose = lisdf
 jose.columns=['lista','total','nCandidatos']
 jose['menciones por candidato'] = jose.total/jose.nCandidatos
 lisdf = jose # albibaq
+
+
+
 #list_size = pxdf.groupby('lista').size()
 #print('CAVEAT:');print(pxdf.value_counts('lista').head(10))
 
