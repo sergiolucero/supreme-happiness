@@ -234,8 +234,10 @@ for xx in (20,40):
 ax.yaxis.set_label_position("right")
 ax.yaxis.tick_right()   # all this works!
 ###   plot them numbers too!
-for idx, row in ts.iterrows():
-    plt.text(row['por_candidato']*0.9, idx+0.2, '%.2f' %row['por_candidato'])
+for patch in ax.patches:
+    xy = patch.get_width()*0.9, patch.get_height()+0.2
+    texto = '%.2f' %patch.get_width()
+    ax.annotate(texto, xy, color='blue', fontsize=12)
 
 #plt.margins(x=0.4)
 #plt.xlim([0,3000])
