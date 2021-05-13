@@ -211,7 +211,12 @@ print('PLOTTED: listas')
 pxdf = xdf.copy()
 pxdf['partido'] = pxdf['partido'].apply(lambda p: p[:-4] if p[-4:]=='-IND' else p)   # IND RN -> RN
 
+parsize = pxdf.groupby('partido').size().reset_index()
+parsize.columns = ['partido','nCandidatos']
+pardict = {parsize.partido.values[ix]: parsize.nCandidatos.values[ix]
+           for ix in range(len(parsize))}
 
+#were
 
 lisdf = pxdf.groupby('lista').agg({'total_menciones':['sum',len]}).reset_index()
 jose = lisdf
@@ -274,6 +279,7 @@ for tema in temas:
     ts[tema]=[row[tema]/candick[row['lista']] for _,row in ts.iterrows()]
     ax = sns.barplot(x=tema, data=ts.sort_values(tema).tail(20), 
             y='lista', palette='RdYlGn')
+    #if tema=='agua':        wendy
     #print('-'*32, tema, '-*32')
     #print(ts.sort_values(tema))
     #for xx in (400,800):    
@@ -295,17 +301,19 @@ for tema in temas:
 
 sdf = pxdf.groupby('partido').sum()
 #sdf[sdf.columns[1:]].head()
+for col in sdf.columns[1:]:
+    sdf[col] = sdf[col]/[pardict[p] for p in sdf.index]
 
-temas = [k for k,v in sdf.sum().to_dict().items() if v>10 and k!='largo']
+temas = [k for k,v in sdf.sum().to_dict().items() if v>0 and k!='largo']
 
-partidos=[k for k,v in sdf.sum(axis=1).to_dict().items() if v>50]
+partidos=[k for k,v in sdf.sum(axis=1).to_dict().items() if v>0]
 partidos = [p for p in partidos if partidos!='INDEPENDIENTES']
 psdf = sdf[sdf.index.isin(partidos)]
 fig, ax = plt.subplots(1, figsize=(24,12))
 p=sns.heatmap(psdf[temas].replace(0,np.nan), annot=True, annot_kws={'size':16, 'weight': 'bold'}, 
               cmap='RdYlGn', fmt='.0f');
 #plt.xticks(rotation=45)
-plt.title('Menciones ambientales por tema y partido (incluye independientes)', size=24);
+plt.title('Menciones ambientales PROMEDIO por tema y partido (incluye independientes)', size=24);
 plt.savefig('static/heatmap_partidosI.png')
 plt.close()
 ############################################### PLOT_PARTIDOS SIN_INDIES
@@ -321,7 +329,8 @@ fig, ax = plt.subplots(1, figsize=(24,12))
 p = sns.heatmap(pidf[temas].replace(0, np.nan),                   # PLOT1: por partido
               annot=True, annot_kws={'size':16, 'weight': 'bold'}, 
                cmap='RdYlGn', fmt='.0f');
-#plt.xticks(rotation=45); plt.title('Menciones ambientales por tema y partido (excluye independientes)', size=24);
+#plt.xticks(rotation=45); 
+plt.title('Menciones ambientales PROMEDIO por tema y partido (excluye independientes)', size=24);
 plt.savefig('static/heatmap_partidos.png')
 plt.close()
 
@@ -333,7 +342,7 @@ for tema in temas:
     p = sns.heatmap(tpidf.replace(0, np.nan),                   # PLOT1: por partido
               annot=True, annot_kws={'size':16, 'weight': 'bold'}, 
                 cmap='RdYlGn', fmt='.0f');
-    plt.title(f'Menciones del concepto {tema} por partido (excluye independientes)', size=24);
+    plt.title(f'Menciones PROMEDIO del concepto {tema} por partido (excluye independientes)', size=24);
     plt.savefig(f'static/heatmap_partidos_{tema}.png')
     plt.close()
 
