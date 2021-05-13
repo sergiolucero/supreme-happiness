@@ -311,7 +311,7 @@ partidos = [p for p in partidos if partidos!='INDEPENDIENTES']
 psdf = sdf[sdf.index.isin(partidos)]
 fig, ax = plt.subplots(1, figsize=(24,12))
 p=sns.heatmap(psdf[temas].replace(0,np.nan), annot=True, annot_kws={'size':16, 'weight': 'bold'}, 
-              cmap='RdYlGn', fmt='.0f');
+              cmap='RdYlGn', fmt='.1f');
 #plt.xticks(rotation=45)
 plt.title('Menciones ambientales PROMEDIO por tema y partido (incluye independientes)', size=24);
 plt.savefig('static/heatmap_partidosI.png')
@@ -328,7 +328,7 @@ pidf.index = [p.replace('PARTIDO ','P.').replace('REGIONALISTA ','REG.') for p i
 fig, ax = plt.subplots(1, figsize=(24,12))
 p = sns.heatmap(pidf[temas].replace(0, np.nan),                   # PLOT1: por partido
               annot=True, annot_kws={'size':16, 'weight': 'bold'}, 
-               cmap='RdYlGn', fmt='.0f');
+               cmap='RdYlGn', fmt='.1f');
 #plt.xticks(rotation=45); 
 plt.title('Menciones ambientales PROMEDIO por tema y partido (excluye independientes)', size=24);
 plt.savefig('static/heatmap_partidos.png')
@@ -341,7 +341,7 @@ for tema in temas:
     fig, ax = plt.subplots(1, figsize=(24,12))
     p = sns.heatmap(tpidf.replace(0, np.nan),                   # PLOT1: por partido
               annot=True, annot_kws={'size':16, 'weight': 'bold'}, 
-                cmap='RdYlGn', fmt='.0f');
+                cmap='RdYlGn', fmt='.1f');
     plt.title(f'Menciones PROMEDIO del concepto {tema} por partido (excluye independientes)', size=24);
     plt.savefig(f'static/heatmap_partidos_{tema}.png')
     plt.close()
