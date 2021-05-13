@@ -132,18 +132,26 @@ print('PUEBLO:', len(ldp), 'INDY:', len(lin))
 #wena
 #print(lvc.head(20))
 
-doPlotD = False
+doPlotD = True
 if doPlotD:
     for dist, dxdf in xdf.groupby('distrito'):
         dxdf['lista']= dxdf.lista.apply(fix_list)
 
         dldf = dxdf.groupby('lista').sum()
+        dldfs = dxdf.groupby('lista').size()
+
         psdf = dldf.drop('largo', axis=1)
+
+
+
+        for col in psdf.columns:
+            psdf[col]/=dldfs.values
+
         fig, ax =  plt.subplots(1, figsize=(14,8))
         fig.subplots_adjust(right=0.8)
         p=sns.heatmap(psdf.replace(0,np.nan), annot=True, 
                 annot_kws={'size':20, 'weight': 'bold'}, 
-              cmap='RdYlGn', fmt='.0f', cbar=False);
+              cmap='RdYlGn', fmt='.1f', cbar=False);
         plt.xticks(fontsize=18)  # agua, clima, medio
         plt.yticks(fontsize=14)  # agua, clima, medio
     #plt.margins(x=0.1)
@@ -314,7 +322,7 @@ p=sns.heatmap(psdf[temas].replace(0,np.nan), annot=True, annot_kws={'size':16, '
               cmap='RdYlGn', fmt='.1f');
 #plt.xticks(rotation=45)
 plt.title('Menciones ambientales PROMEDIO por tema y partido (incluye independientes)', size=24);
-plt.xlabel('x-axis', fontsize=18)
+ax.xaxis.label.set_size(18)
 plt.savefig('static/heatmap_partidosI.png')
 plt.close()
 ############################################### PLOT_PARTIDOS SIN_INDIES
@@ -332,7 +340,8 @@ p = sns.heatmap(pidf[temas].replace(0, np.nan),                   # PLOT1: por p
                cmap='RdYlGn', fmt='.1f');
 #plt.xticks(rotation=45); 
 plt.title('Menciones ambientales PROMEDIO por tema y partido (excluye independientes)', size=24);
-plt.xlabel('x-axis', fontsize=18)
+ax.xaxis.label.set_size(18)
+#plt.xlabel('menciones', fontsize=18)
 plt.savefig('static/heatmap_partidos.png')
 plt.close()
 
@@ -345,7 +354,8 @@ for tema in temas:
               annot=True, annot_kws={'size':16, 'weight': 'bold'}, 
                 cmap='RdYlGn', fmt='.1f');
     plt.title(f'Menciones PROMEDIO del concepto {tema} por partido (excluye independientes)', size=24);
-    plt.xlabel('x-axis', fontsize=18)
+    ax.xaxis.label.set_size(18)
+    #plt.xlabel(tema, fontsize=18)
     plt.savefig(f'static/heatmap_partidos_{tema}.png')
     plt.close()
 print('18 '*18)
