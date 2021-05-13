@@ -314,6 +314,7 @@ p=sns.heatmap(psdf[temas].replace(0,np.nan), annot=True, annot_kws={'size':16, '
               cmap='RdYlGn', fmt='.1f');
 #plt.xticks(rotation=45)
 plt.title('Menciones ambientales PROMEDIO por tema y partido (incluye independientes)', size=24);
+plt.xlabel('x-axis', fontsize=18)
 plt.savefig('static/heatmap_partidosI.png')
 plt.close()
 ############################################### PLOT_PARTIDOS SIN_INDIES
@@ -331,6 +332,7 @@ p = sns.heatmap(pidf[temas].replace(0, np.nan),                   # PLOT1: por p
                cmap='RdYlGn', fmt='.1f');
 #plt.xticks(rotation=45); 
 plt.title('Menciones ambientales PROMEDIO por tema y partido (excluye independientes)', size=24);
+plt.xlabel('x-axis', fontsize=18)
 plt.savefig('static/heatmap_partidos.png')
 plt.close()
 
@@ -343,9 +345,10 @@ for tema in temas:
               annot=True, annot_kws={'size':16, 'weight': 'bold'}, 
                 cmap='RdYlGn', fmt='.1f');
     plt.title(f'Menciones PROMEDIO del concepto {tema} por partido (excluye independientes)', size=24);
+    plt.xlabel('x-axis', fontsize=18)
     plt.savefig(f'static/heatmap_partidos_{tema}.png')
     plt.close()
-
+print('18 '*18)
 tdf = psdf[psdf.index!='INDEPENDIENTES'][temas].reset_index()
 tdf['partido'] = tdf['partido'].apply(lambda p: p[4:]+'-IND ' if p[:3]=='IND' else p)   # IND RN -> RN
 #ts = pd.DataFrame(tdf.sum(axis=1).reset_index())
