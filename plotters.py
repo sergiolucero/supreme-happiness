@@ -114,7 +114,7 @@ print('PUEBLO:', len(ldp), 'INDY:', len(lin))
 #wena
 #print(lvc.head(20))
 
-doPlotD = True
+doPlotD = False
 if doPlotD:
     for dist, dxdf in xdf.groupby('distrito'):
         dxdf['lista']= dxdf.lista.apply(fix_list)
@@ -335,7 +335,6 @@ for tema in temas:
     #plt.xlabel(tema, fontsize=18)
     plt.savefig(f'static/heatmap_partidos_{tema}.png')
     plt.close()
-print('18 '*18)
 
 tdf = psdf[psdf.index!='INDEPENDIENTES'][temas].reset_index()
 #tdf['partido'] = tdf['partido'].apply(lambda p: p[4:]+'-IND ' if p[:3]=='IND' else p)   # IND RN -> RN
@@ -361,7 +360,7 @@ imagebox = OffsetImage(arr_lena, zoom=1.0)
 ab = AnnotationBbox(imagebox, (30, 1.0))
 ax.add_artist(ab)
 arr_lena = mpimg.imread('static/QuantLogo2.png')
-imagebox = OffsetImage(arr_lena, zoom=1.0)
+imagebox = OffsetImage(arr_lena, zoom=0.2)
 ab = AnnotationBbox(imagebox, (32, 1.0))
 ax.add_artist(ab)
 #################
