@@ -124,8 +124,6 @@ if doPlotD:
 
         psdf = dldf.drop('largo', axis=1)
 
-
-
         for col in psdf.columns:
             psdf[col]/=dldfs.values
 
@@ -255,7 +253,7 @@ plt.close()
 ##########schtoops###########
 for tema in temas:
     tdf=xdf[['lista',tema]]
-    tdf['lista']= tdf.lista.apply(fix_list)
+    tdf['lista'] = tdf['lista'].apply(fix_list) #, in_place=True)
     fig, ax = plt.subplots(1, figsize=(24,12))
     ts = xdf.groupby('lista').sum().reset_index()
     # ahora los promedios
@@ -365,14 +363,15 @@ ab = AnnotationBbox(imagebox, (32, 1.0))
 ax.add_artist(ab)
 #################
 plt.title('Ranking partidos políticos por número de menciones medioambientales por candidato', size=20)
+plt.autoscale(enable=True, axis='x', tight=True)
 plt.savefig('static/ranking.png')
 plt.close()
 ##################
-ts = tdf.groupby('partido').sum().sum(axis=1).sort_values().reset_index()
-sdf = ts.groupby('partido').size()
-ts.columns = ['partido','promedio_menciones']
-ts = ts[ts.promedio_menciones>0]
-fig,ax = plt.subplots(1, figsize=(24,12))
+#ts = tdf.groupby('partido').sum().sum(axis=1).sort_values().reset_index()
+#sdf = ts.groupby('partido').size()
+#ts.columns = ['partido','promedio_menciones']
+#ts = ts[ts.promedio_menciones>0]
+#fig,ax = plt.subplots(1, figsize=(24,12))
 #sns.barplot(x='promedio_menciones', data=ts.sort_values('promedio_menciones'), y='partido', palette='RdYlGn');
 #for xx in range(200,1000,200):
 #    plt.axvline(x=xx, color='blue')
