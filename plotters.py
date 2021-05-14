@@ -8,7 +8,8 @@ import matplotlib.pyplot as plt
 import matplotlib.image as mpimg
 from matplotlib.offsetbox import AnnotationBbox, OffsetImage
 plt.autoscale(enable=True, axis='x', tight=True)
-
+sns.set_style('darkgrid')
+#################
 files = list(glob.glob('TEXTOS/TODOS/*.txt'))
 textos = [open(fn).read() for fn in files]		# ACTUALIZADO!
 temas = ['agua','clima', 'medioambiente']
@@ -19,7 +20,7 @@ df['distrito'] = ['D%02d' %(int(dist[1:])) for dist in df.distrito]
 df['largo'] = df.texto.apply(len)
 df['candidato'] = [' '.join(fn.split('/')[2].split('_')[1:])[:-4] for fn in files]
 ############ FINAL COUNTDOWN: normalized and MERGED lists ***
-
+print('YYYYurop')
 cdf=sql('SELECT * FROM candidatos')
 xdf=df.merge(cdf, on='candidato').drop(['archivo','distrito_y','programa'],axis=1)
 xdf=xdf.rename(columns={'distrito_x':'distrito'})
@@ -370,8 +371,7 @@ ts = tdf.groupby('partido').sum().sum(axis=1).sort_values().reset_index()
 ts.columns = ['partido','promedio_menciones']
 ts = ts[ts.promedio_menciones>0]
 fig,ax = plt.subplots(1, figsize=(24,12))
-sns.set_style('darkgrid')
-print('DAAAARK')
+#print('DAAAARK')
 sns.barplot(x='promedio_menciones', 
             data=ts.sort_values('promedio_menciones'), 
             y='partido', palette='RdYlGn');
