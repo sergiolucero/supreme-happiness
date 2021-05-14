@@ -374,13 +374,13 @@ sdf = ts.groupby('partido').size()
 ts.columns = ['partido','promedio_menciones']
 ts = ts[ts.promedio_menciones>0]
 fig,ax = plt.subplots(1, figsize=(24,12))
-sns.barplot(x='promedio_menciones', data=ts.sort_values('promedio_menciones'), y='partido', palette='RdYlGn');
-for xx in range(200,1000,200):
-    plt.axvline(x=xx, color='blue')
-plt.margins(x=0.1)
+#sns.barplot(x='promedio_menciones', data=ts.sort_values('promedio_menciones'), y='partido', palette='RdYlGn');
+#for xx in range(200,1000,200):
+#    plt.axvline(x=xx, color='blue')
+#plt.margins(x=0.1)
 
-arr_lena = mpimg.imread('greenpeace.png')
-imagebox = OffsetImage(arr_lena, zoom=1.0)
-ab = AnnotationBbox(imagebox, (825, 1.0))
-ax.add_artist(ab)
+#arr_lena = mpimg.imread('static/greenpeace.png')
+#imagebox = OffsetImage(arr_lena, zoom=1.0)
+#ab = AnnotationBbox(imagebox, (825, 1.0))
+#ax.add_artist(ab)
 
