@@ -367,17 +367,19 @@ ts = tdf.groupby('partido').sum().sum(axis=1).sort_values().reset_index()
 ts.columns = ['partido','total_menciones']
 ts = ts[ts.total_menciones>0]
 fig,ax = plt.subplots(1, figsize=(24,12))
-sns.barplot(x='total_menciones', data=ts.sort_values('total_menciones'), y='partido', palette='RdYlGn');
-for xx in range(200,1000,200):
+sns.barplot(x='total_menciones', 
+            data=ts.sort_values('total_menciones'), 
+            y='partido', palette='RdYlGn');
+for xx in (5,10):
     plt.axvline(x=xx, color='blue')
 plt.margins(x=0.1)
 
 arr_lena = mpimg.imread('greenpeace.png')
 imagebox = OffsetImage(arr_lena, zoom=1.0)
-ab = AnnotationBbox(imagebox, (825, 1.0))
+ab = AnnotationBbox(imagebox, (3, 1.0))
 ax.add_artist(ab)
 #################
-plt.title('Ranking partidos políticos por número total de menciones', size=20)
+plt.title('Ranking partidos políticos por número de menciones por candidato', size=20)
 plt.savefig('static/ranking.png')
 plt.close()
 ##################
