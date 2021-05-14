@@ -355,10 +355,14 @@ for xx in (10,20,30):
     plt.axvline(x=xx, color='blue')
 plt.margins(x=0.1)
 label_barplot(ax)
-
-arr_lena = mpimg.imread('greenpeace.png')
+#############################################   LOGOS
+arr_lena = mpimg.imread('static/greenpeace.png')
 imagebox = OffsetImage(arr_lena, zoom=1.0)
-ab = AnnotationBbox(imagebox, (20, 1.0))
+ab = AnnotationBbox(imagebox, (30, 1.0))
+ax.add_artist(ab)
+arr_lena = mpimg.imread('static/QuantLogo2.png')
+imagebox = OffsetImage(arr_lena, zoom=1.0)
+ab = AnnotationBbox(imagebox, (32, 1.0))
 ax.add_artist(ab)
 #################
 plt.title('Ranking partidos políticos por número de menciones medioambientales por candidato', size=20)
