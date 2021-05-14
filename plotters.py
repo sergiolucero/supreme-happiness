@@ -299,7 +299,7 @@ p=sns.heatmap(psdf[temas].replace(0,np.nan), annot=True,
 #plt.xticks(rotation=45)
 plt.title('Menciones ambientales PROMEDIO por tema y partido (incluye independientes)', size=24);
 ax.xaxis.label.set_size(18)
-label_barplot(ax)
+label_barplot(p)
 plt.savefig('static/heatmap_partidosI.png')
 plt.close()
 ############################################### PLOT_PARTIDOS SIN_INDIES
@@ -348,12 +348,13 @@ ts.columns = ['partido','promedio_menciones']
 ts = ts[ts.promedio_menciones>0]
 fig,ax = plt.subplots(1, figsize=(24,12))
 #print('DAAAARK')
-sns.barplot(x='promedio_menciones', 
+ax = sns.barplot(x='promedio_menciones', 
             data=ts.sort_values('promedio_menciones'), 
             y='partido', palette='RdYlGn');
 for xx in (10,20,30):
     plt.axvline(x=xx, color='blue')
 plt.margins(x=0.1)
+label_barplot(ax)
 
 arr_lena = mpimg.imread('greenpeace.png')
 imagebox = OffsetImage(arr_lena, zoom=1.0)
