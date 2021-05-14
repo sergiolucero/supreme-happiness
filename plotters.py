@@ -2,14 +2,8 @@ import glob, pandas as pd, numpy as np
 import re
 from util import *
 from searcher import *
-
-import seaborn as sns
-import matplotlib.pyplot as plt
-import matplotlib.image as mpimg
-from matplotlib.offsetbox import AnnotationBbox, OffsetImage
-plt.autoscale(enable=True, axis='x', tight=True)
-sns.set_style('darkgrid')
-#################
+from graphics import *
+########################
 files = list(glob.glob('TEXTOS/TODOS/*.txt'))
 textos = [open(fn).read() for fn in files]		# ACTUALIZADO!
 temas = ['agua','clima', 'medioambiente']
@@ -20,7 +14,7 @@ df['distrito'] = ['D%02d' %(int(dist[1:])) for dist in df.distrito]
 df['largo'] = df.texto.apply(len)
 df['candidato'] = [' '.join(fn.split('/')[2].split('_')[1:])[:-4] for fn in files]
 ############ FINAL COUNTDOWN: normalized and MERGED lists ***
-print('YYYYurop')
+print('ooYYYYurop')
 cdf=sql('SELECT * FROM candidatos')
 xdf=df.merge(cdf, on='candidato').drop(['archivo','distrito_y','programa'],axis=1)
 xdf=xdf.rename(columns={'distrito_x':'distrito'})
@@ -29,20 +23,7 @@ xdf['lista'] = xdf.lista.apply(lambda lis: lis.replace('  ',' '))
 xdf['lista'] = xdf.lista.apply(lambda lis: lis.rstrip())
 #xdf.to_csv('candidatos_fixed.csv', index=False)
 xdf = pd.read_csv('candidatos_fixed.csv')
-
-
-#kw = pd.read_csv('keywords.txt', names=['palabra'])
 kw = eval(open('keywords_final.txt').read())
-#kw['palabra'] = kw.palabra.apply(lambda p: p.split('\t')[1])
-#WORDS = list(kw.keys())
-#for v in kw.values():
-#    WORDS += v
-#print('WORDS:', WORDS)
-#kw = {'concepto': [menciones]}
-
-#for word in WORDS:
-#    xdf[word] = xdf.texto.apply(lambda t: len(list(re.finditer(word.lower(), t))))
-
 kw = {k: [k]+v for k,v in kw.items()}
 for conc, mens in kw.items():
     xconc = [0]*len(xdf)
@@ -250,13 +231,6 @@ fig, ax = plt.subplots(1, figsize=(24,12))
 #ts['total_menciones']=ts.total_menciones/2       # está duplicada
 #print(ts)
 #wn
-def label_barplot(ax):
-    for patch in ax.patches:
-        xy = patch.get_width()-2, patch._y0+0.44
-        texto = '%.2f' %patch.get_width()
-    #print(xy)
-        ax.annotate(texto, xy, color='blue', fontsize=16, weight='bold')
-
 
 
 ts = lisdf.sort_values('menciones por candidato').tail(20)
@@ -319,11 +293,13 @@ partidos=[k for k,v in sdf.sum(axis=1).to_dict().items() if v>0]
 partidos = [p for p in partidos if partidos!='INDEPENDIENTES']
 psdf = sdf[sdf.index.isin(partidos)]
 fig, ax = plt.subplots(1, figsize=(24,12))
-p=sns.heatmap(psdf[temas].replace(0,np.nan), annot=True, annot_kws={'size':16, 'weight': 'bold'}, 
+p=sns.heatmap(psdf[temas].replace(0,np.nan), annot=True, 
+                annot_kws={'size':16, 'weight': 'bold'}, 
               cmap='RdYlGn', fmt='.1f');
 #plt.xticks(rotation=45)
 plt.title('Menciones ambientales PROMEDIO por tema y partido (incluye independientes)', size=24);
 ax.xaxis.label.set_size(18)
+label_barplot(ax)
 plt.savefig('static/heatmap_partidosI.png')
 plt.close()
 ############################################### PLOT_PARTIDOS SIN_INDIES
