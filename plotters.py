@@ -359,14 +359,19 @@ for tema in temas:
     plt.savefig(f'static/heatmap_partidos_{tema}.png')
     plt.close()
 print('18 '*18)
+
 tdf = psdf[psdf.index!='INDEPENDIENTES'][temas].reset_index()
-tdf['partido'] = tdf['partido'].apply(lambda p: p[4:]+'-IND ' if p[:3]=='IND' else p)   # IND RN -> RN
+#tdf['partido'] = tdf['partido'].apply(lambda p: p[4:]+'-IND ' if p[:3]=='IND' else p)   # IND RN -> RN
+#tptp
+
 #ts = pd.DataFrame(tdf.sum(axis=1).reset_index())
 ############## GRAFICO DE BARRAS POR PARTIDO: make stacks
 ts = tdf.groupby('partido').sum().sum(axis=1).sort_values().reset_index()
 ts.columns = ['partido','promedio_menciones']
 ts = ts[ts.promedio_menciones>0]
 fig,ax = plt.subplots(1, figsize=(24,12))
+sns.set_style('darkgrid')
+print('DAAAARK')
 sns.barplot(x='promedio_menciones', 
             data=ts.sort_values('promedio_menciones'), 
             y='partido', palette='RdYlGn');
