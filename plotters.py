@@ -359,8 +359,8 @@ ab = AnnotationBbox(imagebox, (32, 1.0))
 ax.add_artist(ab)
 
 arr_lena = mpimg.imread('static/QuantLogo2.png')
-imagebox = OffsetImage(arr_lena, zoom=0.5)
-ab = AnnotationBbox(imagebox, (30, 2.0))
+imagebox = OffsetImage(arr_lena, zoom=0.2)
+ab = AnnotationBbox(imagebox, (30, 3.0))
 ax.add_artist(ab)
 #################
 plt.title('Ranking partidos políticos por número de menciones medioambientales por candidato', size=20)
