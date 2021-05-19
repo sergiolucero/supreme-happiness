@@ -14,7 +14,7 @@ df['distrito'] = ['D%02d' %(int(dist[1:])) for dist in df.distrito]
 df['largo'] = df.texto.apply(len)
 df['candidato'] = [' '.join(fn.split('/')[2].split('_')[1:])[:-4] for fn in files]
 ############ FINAL COUNTDOWN: normalized and MERGED lists ***
-print('ooYYYYurop')
+#print('ooYYYYurop')
 cdf=sql('SELECT * FROM candidatos')
 xdf=df.merge(cdf, on='candidato').drop(['archivo','distrito_y','programa'],axis=1)
 xdf=xdf.rename(columns={'distrito_x':'distrito'})
@@ -23,8 +23,38 @@ xdf['lista'] = xdf.lista.apply(lambda lis: lis.replace('  ',' '))
 xdf['lista'] = xdf.lista.apply(lambda lis: lis.rstrip())
 #xdf.to_csv('candidatos_fixed.csv', index=False)
 xdf = pd.read_csv('candidatos_fixed.csv')
+edf = pd.read_csv('electos.csv')   # filtro 19 mayo
+
+bads = []
+oxdf = pd.DataFrame()
+
+for candi in edf.NOMBRE:
+    cs = candi.split()
+    cs = [c for c in cs if '.' not in c]
+    cq = ' AND '.join([f" candidato LIKE '%{c.upper()}%' " for c in cs])
+    q = f'SELECT * FROM candidatos WHERE {cq}'
+    sq = sql(q)
+    if len(sq):
+        cdf = xdf[xdf.candidato==sq.iloc[0]['candidato']]
+        oxdf = oxdf.append(cdf)
+        print(len(oxdf),end=':')
+    else:  # try originarios
+        q = f'SELECT * FROM candidatos_originarios WHERE {cq}'
+        sq = sql(q)
+        if len(sq):
+            oxdf=oxdf.append(sq)
+        else:        #jose
+            bads.append(candi)
+xdf = oxdf
+xdf['partido'] = xdf.partido.apply(lambda p: 'ORIGINARIOS' if isinstance(p,float) else p)
+xdf['lista'] = xdf.lista.apply(lambda p: 'ORIGINARIOS' if isinstance(p,float) else p)
+print('BADS:', bads)
+#print(len(xdf), len(edf))
+#wey
+#####################
 kw = eval(open('keywords_final.txt').read())
 kw = {k: [k]+v for k,v in kw.items()}
+
 for conc, mens in kw.items():
     xconc = [0]*len(xdf)
     for word in mens:
@@ -43,15 +73,18 @@ xdf['lista'] = xdf.lista.apply(lambda x: x.split('(')[0] if '(' in x else x)
 
 #do
 #print('B4:', len(xdf))
-udi = xdf[xdf.partido=='UNION DEMOCRATA INDEPENDIENTE']
-udi.to_html('static/udi.html', index=False)
-udi2 = udi[udi.candidato=='DIEGO RIVEAUX MARCET']
-udi2.iloc[0]['medioambiente']=2
-print('LENU:', len(udi2))
-xdf = xdf[xdf.partido!='UNION DEMOCRATA INDEPENDIENTE']
-xdf = xdf.append(udi2)
+#udi = xdf[xdf.partido=='UNION DEMOCRATA INDEPENDIENTE']
+#udi.to_html('static/udi.html', index=False)
+#udi2 = udi[udi.candidato=='DIEGO RIVEAUX MARCET']
+#udi2.iloc[0]['medioambiente']=2
+#print('LENU:', len(udi2))
+#xdf = xdf[xdf.partido!='UNION DEMOCRATA INDEPENDIENTE']
+#xdf = xdf.append(udi2)
 #print('Afta:', len(xdf))
 xdf['total_menciones'] = xdf['agua']+xdf['clima']+xdf['medioambiente']
+
+xdf.to_excel('static/menciones_por_candidato.xlsx', index=False)
+
 #xdf = xdf.drop(['texto','largo'],axis=1)
 ldf = xdf.groupby('lista').sum().reset_index()
 print(ldf.columns)
