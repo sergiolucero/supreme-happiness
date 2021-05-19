@@ -147,7 +147,7 @@ print('PUEBLO:', len(ldp), 'INDY:', len(lin))
 #wena
 #print(lvc.head(20))
 
-doPlotD = False
+doPlotD = True
 if doPlotD:
     for dist, dxdf in xdf.groupby('distrito'):
         dxdf['lista']= dxdf.lista.apply(fix_list)
@@ -192,40 +192,35 @@ if doPlotD:
 
 print('PLOTTED: distritos')
 #############################
-plotLD = False
+plotLD = True
 if plotLD:
     for lista, dxdf in xdf.groupby('lista'):
         clista = lista.replace(' ','_').replace('(','').replace(')','').replace('_/_','_')
         dldf = dxdf.groupby('distrito').sum()
         psdf = dldf.drop('largo', axis=1)
-
-        fig, ax =  plt.subplots(1, figsize=(24,12))
-        p = sns.heatmap(psdf.replace(0,np.nan), annot=True, 
+        if len(psdf):
+            fig, ax =  plt.subplots(1, figsize=(24,12))
+            p = sns.heatmap(psdf.replace(0,np.nan), annot=True, 
                   annot_kws={'size':20, 'weight': 'bold'}, 
                   cmap='RdYlGn', fmt='.0f', cbar=False);
-    #plt.xticks(rotation=45)
-        plt.xticks(fontsize=18)  # agua, clima, medio
-    #plt.yticks(rotation=0)
-    #plt.margins(x=0.1)
-        plt.title(f'Menciones ambientales por tema lista {clista})', size=24);
-        ax.yaxis.set_label_position("right")
-        ax.yaxis.tick_right()
-        plt.yticks(rotation=0)  # does it work? 90 don't
-        plt.savefig(f'static/heatmap_lista_{clista}.png')
-        #print(dist,end=':')
-
-        plt.close()
-
-        for tema in temas:
-            print('TEMA:', tema)
-            tpidf=dxdf[[tema]]
-            fig, ax = plt.subplots(1, figsize=(24,12))
-            p = sns.heatmap(tpidf.replace(0, np.nan),                   # PLOT1: por partido
-              annot=True, annot_kws={'size':16, 'weight': 'bold'}, 
-                cmap='RdYlGn', fmt='.0f');
-            plt.title(f'Menciones del concepto {tema} por partido (excluye independientes)', size=24);
-            plt.savefig(f'static/heatmap_lista_{clista}_{tema}.png')
+            plt.xticks(fontsize=18)  # agua, clima, medio
+            plt.title(f'Menciones ambientales por tema lista {clista})', size=24);
+            ax.yaxis.set_label_position("right")
+            ax.yaxis.tick_right()
+            plt.yticks(rotation=0)  # does it work? 90 don't
+            plt.savefig(f'static/heatmap_lista_{clista}.png')
             plt.close()
+
+            for tema in temas:
+                print('TEMA:', tema)
+                tpidf=dxdf[[tema]]
+                fig, ax = plt.subplots(1, figsize=(24,12))
+                p = sns.heatmap(tpidf.replace(0, np.nan),                   # PLOT1: por partido
+                  annot=True, annot_kws={'size':16, 'weight': 'bold'}, 
+                    cmap='RdYlGn', fmt='.0f');
+                plt.title(f'Menciones del concepto {tema} por partido (excluye independientes)', size=24);
+                plt.savefig(f'static/heatmap_lista_{clista}_{tema}.png')
+                plt.close()
 
 print('PLOTTED: listas')
 #################################
@@ -377,6 +372,7 @@ ts = tdf.groupby('partido').sum().sum(axis=1).sort_values().reset_index()
 ts.columns = ['partido','promedio_menciones']
 ts = ts[ts.promedio_menciones>0]
 fig,ax = plt.subplots(1, figsize=(24,12))
+N=len(xdf)
 #print('DAAAARK')
 ax = sns.barplot(x='promedio_menciones', 
             data=ts.sort_values('promedio_menciones'), 
@@ -396,7 +392,8 @@ imagebox = OffsetImage(arr_lena, zoom=0.2)
 ab = AnnotationBbox(imagebox, (32, 3.0))
 ax.add_artist(ab)
 #################
-plt.title('Ranking partidos políticos por número de menciones medioambientales por candidato', size=20)
+plt.title(f'Ranking partidos políticos por número de menciones medioambientales por candidato (N={N})', 
+            size=20)
 plt.autoscale(enable=True, axis='x', tight=True)
 plt.savefig('static/ranking.png')
 plt.close()
