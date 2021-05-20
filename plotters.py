@@ -31,24 +31,40 @@ oxdf = pd.DataFrame()
 for candi in edf.NOMBRE:
     cs = candi.split()
     cs = [c for c in cs if '.' not in c]
-    cq = ' AND '.join([f" candidato LIKE '%{c.upper()}%' " for c in cs])
+    cq = ' AND '.join([f" (candidato LIKE '%{c.upper()}%')" for c in cs])
     q = f'SELECT * FROM candidatos WHERE {cq}'
+    if 'TOLOZA' in q:
+        print('TOLOZA')
+        q = "SELECT * FROM candidatos WHERE candidato LIKE '%TOLOZA%'"
+    #q = f"SELECT * FROM candidatos WHERE candidato LIKE '%{cs[0].upper()}%'"
     sq = sql(q)
+    #for ccs in cs[1:]:
+    #    sq = sq[sq.candidato.str.contains(ccs)]
+
     if len(sq):
-        cdf = xdf[xdf.candidato==sq.iloc[0]['candidato']]
+        cdf = xdf[xdf.candidato.str.contains(sq.iloc[0]['candidato'])]
+        if len(cdf)==0:
+            print(candi, len(cdf))
+            print(q)
         oxdf = oxdf.append(cdf)
         print(len(oxdf),end=':')
     else:  # try originarios
-        q = f'SELECT * FROM candidatos_originarios WHERE {cq}'
+        q = f'SELECT * FROM candidatos_originarios WHERE {cq.upper()}'
         sq = sql(q)
-        if len(sq):
+        if len(sq)==1:
             oxdf=oxdf.append(sq)
         else:        #jose
+            print('BAD:', candi, len(sq))
+            print(q)
             bads.append(candi)
 xdf = oxdf
 xdf['partido'] = xdf.partido.apply(lambda p: 'ORIGINARIOS' if isinstance(p,float) else p)
 xdf['lista'] = xdf.lista.apply(lambda p: 'ORIGINARIOS' if isinstance(p,float) else p)
 print('BADS:', bads)
+
+N = len(xdf)
+print('N=',N)
+#wtf
 #print(len(xdf), len(edf))
 #wey
 #####################
@@ -192,7 +208,7 @@ if doPlotD:
 
 print('PLOTTED: distritos')
 #############################
-plotLD = True
+plotLD = False
 if plotLD:
     for lista, dxdf in xdf.groupby('lista'):
         clista = lista.replace(' ','_').replace('(','').replace(')','').replace('_/_','_')
