@@ -27,31 +27,41 @@ oxdf = pd.DataFrame()
 for candi in edf.NOMBRE:
     cs = candi.split()
     cs = [c for c in cs if '.' not in c]
-    cq = ' AND '.join([f" (candidato LIKE '%{c.upper()}%')" for c in cs])
+    cq = ' AND '.join([f" candidato LIKE '%{c.upper()}%'" for c in cs])
     q = f'SELECT * FROM candidatos WHERE {cq}'
-    if 'TOLOZA' in q:
-        print('TOLOZA')
-        q = "SELECT * FROM candidatos WHERE candidato LIKE '%TOLOZA%'"
+    
+    #if 'TOLOZA' in q:
+    #    print('TOLOZA')
+    #    q = "SELECT * FROM candidatos WHERE candidato LIKE '%TOLOZA%'"
     #q = f"SELECT * FROM candidatos WHERE candidato LIKE '%{cs[0].upper()}%'"
-    sq = sql(q)
+    #sq = sql(q)
+    sq = cdf.copy();lens=[]
+    for c in cs:
+        sq = sq[sq.candidato.str.contains(c.upper())]
+        lens.append(len(sq))
     #for ccs in cs[1:]:
     #    sq = sq[sq.candidato.str.contains(ccs)]
 
-    if len(sq):
-        cdf = xdf[xdf.candidato.str.contains(sq.iloc[0]['candidato'])]
-        if len(cdf)==0:
-            print(candi, len(cdf))
-            print(q)
-        oxdf = oxdf.append(cdf)
+    if len(sq)==1:
+        ucand = sq.iloc[0]['candidato'].upper()
+        scdf = cdf[cdf.candidato.str.contains(ucand)]
+        if len(scdf)==0:
+            #print(candi, len(scdf))
+            #print(ucand)
+            #print(q)
+            #wet
+        oxdf = oxdf.append(scdf)
+        #print(oxdf)
         print(len(oxdf),end=':')
     else:  # try originarios
+        print('oricheck', lens)
         q = f'SELECT * FROM candidatos_originarios WHERE {cq.upper()}'
         sq = sql(q)
         if len(sq)==1:
             oxdf=oxdf.append(sq)
         else:        #jose
-            print('BAD:', candi, len(sq))
-            print(q)
+            #print('BAD:', candi, len(sq))
+            #print(q)
             bads.append(candi)
 xdf = oxdf
 xdf['partido'] = xdf.partido.apply(lambda p: 'ORIGINARIOS' if isinstance(p,float) else p)
